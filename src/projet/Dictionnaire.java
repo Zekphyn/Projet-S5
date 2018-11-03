@@ -14,7 +14,7 @@ public class Dictionnaire {
 		dico = new ArrayList<String>();
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new FileReader("dico.txt"));
+			br = new BufferedReader(new FileReader("src/file/dico.txt"));
 		}
 		catch(FileNotFoundException e) {}
 		try {
