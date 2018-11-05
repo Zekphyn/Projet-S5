@@ -1,9 +1,11 @@
 package pendu;
 
-public class Main{
+import projet.Jeu;
+
+public class Pendu extends Jeu{
 	public static void main(String[] args){
-		Observable model = new Model();
-		Fenetre fen = new Fenetre(model);
+		Fenetre fen = new Fenetre();
 		fen.setVisible(true);
 	}
+  
 }

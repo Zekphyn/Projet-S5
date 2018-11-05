@@ -6,13 +6,16 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class GamePanel extends ZContainer implements Observer{
 
+public class JPanelPendu extends ZContainer{
+	
+	/**
+	 * 
+	 */
 	private Dimension dimension = new Dimension();
 	private JLabel 	nombreMot, 
 					score,
@@ -20,11 +23,9 @@ public class GamePanel extends ZContainer implements Observer{
 	private ImageLabel imageLabel;
 	private JButton bouton[];
 	
-	private Controler controler;
 	
-	public GamePanel(Dimension dim, Observable mod){
+	public JPanelPendu(Dimension dim){
 		super(dim);
-		this.controler = new Controler(mod);
 		initPanel();
 	}
 
@@ -120,12 +121,10 @@ public class GamePanel extends ZContainer implements Observer{
 	}
 	
 	public void accueil() {}
-	public void showScore(Score[] list) {}
 
 	class BoutonListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			((JButton)e.getSource()).setEnabled(false);
-			controler.control(((JButton)e.getSource()).getText().charAt(0));
 		}		
 	}
 	

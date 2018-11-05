@@ -6,18 +6,20 @@ import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class RulesPanel extends ZContainer{
+public class ReglePendu extends ZContainer{
 
-	public RulesPanel(Dimension dim){
+	private JPanel panel;
+	
+	public ReglePendu(Dimension dim){
 		super(dim);
 		initPanel();
 	}
 
 	public void initPanel(){
 		JLabel titre = new JLabel();
-		titre.setFont(comics30);
 		titre.setText("Le jeu du pendu");
 		titre.setHorizontalAlignment(JLabel.CENTER);
 		
@@ -34,9 +36,11 @@ public class RulesPanel extends ZContainer{
 							"\tMot trouvé avec cinq erreurs\t10 pts\n\tMot trouvé avec six erreurs\t5 pts\n\n\n" +
 							"Je vous souhaite bien du plaisir !\nSi vous pensez pouvoir trouver un mot en un seul essai, c'est que vous croyez que le dictionnaire est petit.\n" +
 							"Or, pour votre information, il contient plus de 336 000 mots… Bonne chance ! ;)");
-		accueil.setFont(arial);
 		accueil.setEditable(false);
 		this.panel.add(accueil, BorderLayout.SOUTH);
+	}
+	protected JPanel getPanel(){
+		return this.panel;
 	}
 	
 }
