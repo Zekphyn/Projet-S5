@@ -19,8 +19,9 @@ public class Dictionnaire {
 		catch(FileNotFoundException e) {}
 		try {
 			String line;
-			while ((line = br.readLine()) != null) 
-				dico.add(line);
+			while ((line = br.readLine()) != null) {
+				System.out.println(line);
+				dico.add(line);}
 			br.close();
 		}
 		catch(IOException io) {
@@ -29,10 +30,9 @@ public class Dictionnaire {
 	}
 	
 	//retourne true si le mot est dans le dico sinon retourne false
-	
 	public boolean motExiste(String mot)
 	{
-		return this.dico.contains(mot);
+		return this.dico.contains(mot.toUpperCase());
 	}
 	
 	
@@ -54,4 +54,6 @@ public class Dictionnaire {
 		}
 		
 	}
+		
+	
 }
