@@ -20,7 +20,6 @@ public class Dictionnaire {
 		try {
 			String line;
 			while ((line = br.readLine()) != null) {
-				System.out.println(line);
 				dico.add(line);}
 			br.close();
 		}

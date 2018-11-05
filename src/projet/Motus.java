@@ -22,7 +22,7 @@ public class Motus extends Jeu {
 		//Taille du mot aléatoire entre 7 et 10 lettres
 		this.tailleMot = random.nextInt(3)+7;
 		motRech = dico.motAlea(tailleMot).toUpperCase();
-		this.trouve = new 
+	//	this.trouve = new 
 	}
 	
 	//initialise une grille pouvant contenir 10 mots de tailleMot lettres
@@ -33,7 +33,7 @@ public class Motus extends Jeu {
 	}
 	
 	public String saisieMot() {
-		String str;
+		String str = "";
 		String strf ="";
 		while(str.length() != tailleMot) {
 			Scanner sc = new Scanner(System.in);
@@ -94,7 +94,9 @@ public class Motus extends Jeu {
 		return charVerif;
 	}
 	
-	//public boolean[] majCarTrouve(int[] tabVerif, boolean [])
+	//public boolean[] majCarTrouve(int[] tabVerif, boolean []) {
+	
+	
 	
 	public int jouer()
 	{
