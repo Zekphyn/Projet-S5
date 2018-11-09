@@ -1,31 +1,20 @@
 package pendu;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class ReglePendu extends ZContainer{
-
-	private JPanel panel;
-	
-	public ReglePendu(Dimension dim){
-		super(dim);
-		initPanel();
-	}
+public class ReglePendu extends JPanel{
 
 	public void initPanel(){
 		JLabel titre = new JLabel();
 		titre.setText("Le jeu du pendu");
 		titre.setHorizontalAlignment(JLabel.CENTER);
 		
-		this.panel.add(titre, BorderLayout.CENTER);
+		//this.panel.add(titre, BorderLayout.CENTER);
 		
-		this.panel.add(new JLabel(new ImageIcon("pendu.jpg")), BorderLayout.CENTER);
+		//this.panel.add(new JLabel(new ImageIcon("pendu.jpg")), BorderLayout.CENTER);
 		
 		JTextArea accueil = new JTextArea();
 		accueil.setBackground(Color.white);
@@ -37,10 +26,6 @@ public class ReglePendu extends ZContainer{
 							"Je vous souhaite bien du plaisir !\nSi vous pensez pouvoir trouver un mot en un seul essai, c'est que vous croyez que le dictionnaire est petit.\n" +
 							"Or, pour votre information, il contient plus de 336 000 mots… Bonne chance ! ;)");
 		accueil.setEditable(false);
-		this.panel.add(accueil, BorderLayout.SOUTH);
+		//this.panel.add(accueil, BorderLayout.SOUTH);
 	}
-	protected JPanel getPanel(){
-		return this.panel;
-	}
-	
 }

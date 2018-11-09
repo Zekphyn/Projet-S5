@@ -11,14 +11,8 @@ import javax.swing.JLabel;
 
 public class ImageLabel extends JLabel{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private String imagePath = "src/images/pendu0.jpg";
-	
 	public ImageLabel(){}
-	
 	public ImageLabel(String path){
 		this.imagePath = path;
 	}
