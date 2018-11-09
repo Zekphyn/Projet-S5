@@ -1,10 +1,11 @@
 package projet;
 
+import java.io.IOException;
+
+import motus.Motus;
+
 public class Main {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public static void main(String[] args) throws IOException {
 	}
-
 }
