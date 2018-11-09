@@ -1,10 +1,9 @@
 package projet;
 
-import pendu.AccueilPanel;
-import pendu.GamePanel;
-import pendu.PenduJPanel;
+import pendu.Fenetre;
+import pendu.Model;
+import pendu.Observable;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -39,10 +38,10 @@ public class Jeu extends Menu implements ActionListener {
 	
 	public void lancerPendu() {
 		System.out.println("allo");
-		//AccueilPanel accueilpendu = new AccueilPanel();	
-		GamePanel pendu = new GamePanel(new Dimension(900,600), null);
-		
+		Observable model = new Model();
+		Fenetre pendu = new Fenetre(model);
 		fenetre.setContentPane(pendu.getPanel());
+		fenetre.add(pendu.getMenu());
 		fenetre.revalidate();
 	}
 	@Override
