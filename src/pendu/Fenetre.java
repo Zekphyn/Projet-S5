@@ -16,28 +16,36 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-public class Fenetre extends JFrame{
+public class Fenetre extends JFrame implements Observer{
 
 	private JMenuBar menu = null;
 
 	  private JMenu fichier = null;
 	  private JMenuItem nouveau = null;
+	  private JMenuItem score = null;
 	  private JMenuItem quitter = null;
 	  private JMenu apropos = null;
 	  private JMenuItem apropos2 = null;
 	  private JMenuItem rules = null;
 	  private JPanel conteneur = new JPanel();
 	  private Dimension size;
+	  private Observable model;
 	  
+	  private char[] lettreTab = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
+              'j',
+              'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+              't',
+              'u', 'v', 'w', 'x', 'y', 'z'};
 	  
-	  public Fenetre(){
+	public Fenetre(Observable obs){
 		this.setTitle("Le pendu");
-	    this.setSize(1200, 800);
+	    this.setSize(900, 600);
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    this.setLocationRelativeTo(null);
 	    this.setResizable(false);
 	    
-
+	    this.model = obs;
+	    this.model.addObserver(this);
 	    this.size = new Dimension(this.getWidth(), this.getHeight());
 	    
 	    menu = new JMenuBar();
@@ -52,10 +60,25 @@ public class Fenetre extends JFrame{
 	    nouveau.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
 				conteneur.removeAll();
-				conteneur.add(new JPanelPendu(size).getPanel());
+				GamePanel gp = new GamePanel(size, model);
+				model.addObserver(gp);
+				conteneur.add(gp.getPanel(), BorderLayout.CENTER);
 				conteneur.revalidate();
+				initModel();
 			}	    	
 	    });
+
+	    score = new JMenuItem("Score");
+	    score.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
+	                                                KeyEvent.CTRL_MASK));
+    score.addActionListener(new ActionListener(){
+		public void actionPerformed(ActionEvent arg0){
+			conteneur.removeAll();
+			conteneur.add(new ScorePanel(size, model.getScores()).getPanel(), BorderLayout.CENTER);
+			conteneur.revalidate();
+			model.reset();
+		}
+    });
 
 	    quitter = new JMenuItem("Quitter");
 	    quitter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
@@ -67,6 +90,7 @@ public class Fenetre extends JFrame{
 	    });
 
 	    fichier.add(nouveau);
+	    fichier.add(score);
 	    fichier.addSeparator();
 	    fichier.add(quitter);
 
@@ -78,8 +102,9 @@ public class Fenetre extends JFrame{
 	    rules.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
 				conteneur.removeAll();
-				conteneur.add(new ReglePendu(size).getPanel(), BorderLayout.CENTER);
+				conteneur.add(new RulesPanel(size).getPanel(), BorderLayout.CENTER);
 				conteneur.revalidate();
+				model.reset();
 			}	    	
 	    });
 
@@ -87,11 +112,12 @@ public class Fenetre extends JFrame{
 	    apropos2.addActionListener(new ActionListener(){
 	    	public void actionPerformed(ActionEvent e){
 	    		JOptionPane.showMessageDialog(null,
-							    		          "Créateur : Projet Algo & Dev",
+							    		          "Créateur : Cysboy\nLicence : Freeware\nCopyright : cysboy@sdz.com",
 							    		          "Informations", JOptionPane.NO_OPTION);
 	    		conteneur.removeAll();
-	    		conteneur.add(new AccueilPendu(size).getPanel());
+	    		conteneur.add(new AccueilPanel(size).getPanel());
 	    		conteneur.revalidate();
+	    		model.reset();
 	    	}
 	    });
 
@@ -103,22 +129,30 @@ public class Fenetre extends JFrame{
 	    
 	    this.conteneur.setPreferredSize(this.size);
 	    this.conteneur.setBackground(Color.white);
-	    this.conteneur.add(new AccueilPendu(this.size).getPanel());
+	    this.conteneur.add(new AccueilPanel(this.size).getPanel());
 	    this.setContentPane(this.conteneur);
 	    
 	    this.setJMenuBar(menu);
 	}
 	
-
+	public void showScore(Score[] list){
+		conteneur.removeAll();
+		conteneur.add(new ScorePanel(this.size, list).getPanel(), BorderLayout.CENTER);
+		conteneur.revalidate();
+		model.reset();
+	}
 	
 	public void accueil(){
 		System.out.println("Mise à jour de l'accueil…");
 		conteneur.removeAll();
-		conteneur.add(new AccueilPendu(size).getPanel(), BorderLayout.CENTER);
+		conteneur.add(new AccueilPanel(size).getPanel(), BorderLayout.CENTER);
 		conteneur.revalidate();
 	}
 
-
+	private void initModel(){
+		this.model = new Model();
+		this.model.addObserver(this);
+	}
 	public void update(String mot, int pts, String imgPath, int nbreMot) {}
 	public void restart(String word) {}
 

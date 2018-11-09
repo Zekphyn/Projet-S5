@@ -1,6 +1,8 @@
 package projet;
 
-import pendu.AccueilPendu;
+import pendu.AccueilPanel;
+import pendu.GamePanel;
+import pendu.PenduJPanel;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -37,9 +39,10 @@ public class Jeu extends Menu implements ActionListener {
 	
 	public void lancerPendu() {
 		System.out.println("allo");
-		AccueilPendu acceuilpendu = new AccueilPendu(new Dimension(900,600));
+		//AccueilPanel accueilpendu = new AccueilPanel();	
+		GamePanel pendu = new GamePanel(new Dimension(900,600), null);
 		
-		fenetre.setContentPane(acceuilpendu.getPanel());
+		fenetre.setContentPane(pendu.getPanel());
 		fenetre.revalidate();
 	}
 	@Override

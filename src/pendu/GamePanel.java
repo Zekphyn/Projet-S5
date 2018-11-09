@@ -1,39 +1,43 @@
 package pendu;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
-public class JPanelPendu extends ZContainer{
-	
-	/**
-	 * 
-	 */
+public class GamePanel extends ZContainer implements Observer{
+
 	private Dimension dimension = new Dimension();
+	private int pts = 0;
+	private ImageIcon img;
+	private String mot;
 	private JLabel 	nombreMot, 
 					score,
 					motSecret;
 	private ImageLabel imageLabel;
 	private JButton bouton[];
 	
+	private Controler controler;
 	
-	public JPanelPendu(Dimension dim){
+	public GamePanel(Dimension dim, Observable mod){
 		super(dim);
+		this.controler = new Controler(mod);
 		initPanel();
 	}
 
 	protected void initPanel(){
 		JPanel leftContent = new JPanel();
 		JPanel rightContent = new JPanel();
-		System.out.println("Size : " + this.dimension.getWidth());
-		Dimension dim1 = new Dimension((int)(this.dimension.getWidth()/2), (int)this.dimension.getHeight());
+		//System.out.println("Size : " + this.dimension.getWidth());
+		//Dimension dim = new Dimension((int)(this.dimension.getWidth()/2), (int)this.dimension.getHeight());
 		
 		JPanel head = new JPanel();
 		this.imageLabel = new ImageLabel(); 
@@ -42,7 +46,7 @@ public class JPanelPendu extends ZContainer{
 		this.nombreMot = new JLabel();
 		this.score = new JLabel(); 
 		
-		this.dimension = new Dimension(400, 530); 
+		this.dimension = new Dimension(600, 800); 
 		rightContent.setPreferredSize(this.dimension);
 		rightContent.add(this.imageLabel, BorderLayout.CENTER);
 		rightContent.setBackground(Color.white);
@@ -121,10 +125,12 @@ public class JPanelPendu extends ZContainer{
 	}
 	
 	public void accueil() {}
+	public void showScore(Score[] list) {}
 
 	class BoutonListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			((JButton)e.getSource()).setEnabled(false);
+			controler.control(((JButton)e.getSource()).getText().charAt(0));
 		}		
 	}
 	
