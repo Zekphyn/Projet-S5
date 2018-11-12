@@ -11,24 +11,20 @@ import javax.swing.*;
 
 public class Jeu extends Menu implements ActionListener {
 	
-	//Menu menu = new Menu();
-	
 	public static void main(String[] args){
 		new Jeu("Jeu");
 	}
 	JFrame fenetre;
-
+	
 	public Jeu() {
 		
 	}
-	public Jeu(Menu menu) {
-		
-	}
+	
 	public Jeu(String nom) {
 		fenetre = new JFrame(nom);
 		fenetre.setExtendedState(JFrame.MAXIMIZED_BOTH);
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        fenetre.setLocationRelativeTo(null);     
+        fenetre.setLocationRelativeTo(null);
         fenetre.setContentPane(getPanelMenu());
 		fenetre.setVisible(true);
 	}
