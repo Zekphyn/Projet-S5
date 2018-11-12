@@ -3,16 +3,24 @@ package projet;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 public class Menu implements ActionListener {
 	
@@ -28,13 +36,26 @@ public class Menu implements ActionListener {
 	public Menu() {
 		mainPanel.setLayout(new BorderLayout());
 		panelMenu.setOpaque(false);
-		mainPanel.add(panelMenu,BorderLayout.WEST);
-		panelMenu.add(buttonPendu);
-		panelMenu.add(buttonMotus);
-		panelMenu.add(buttonMotsMeles);
-		panelMenu.add(buttonSudoku);
-		panelMenu.add(buttonClassement);
-		panelMenu.add(buttonQuitter);
+		mainPanel.add(panelMenu,BorderLayout.CENTER);
+		setPanelButton();
+	}
+	
+	public void setPanelButton() {
+		panelMenu.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.anchor = GridBagConstraints.NORTH;
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weighty = 1;
+
+		panelMenu.add(buttonPendu,gbc);
+		panelMenu.add(buttonMotus,gbc);
+		panelMenu.add(buttonMotsMeles,gbc);
+		panelMenu.add(buttonSudoku,gbc);
+		panelMenu.add(buttonClassement,gbc);
+		panelMenu.add(buttonQuitter,gbc);
+		
 		buttonPendu.addActionListener(this);
 		buttonMotus.addActionListener(this);
 		buttonMotsMeles.addActionListener(this);

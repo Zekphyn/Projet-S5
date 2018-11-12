@@ -4,6 +4,7 @@ import pendu.Fenetre;
 import pendu.Model;
 import pendu.Observable;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -26,6 +27,9 @@ public class Jeu extends Menu implements ActionListener {
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fenetre.setLocationRelativeTo(null);
         fenetre.setContentPane(getPanelMenu());
+        fenetre.setMinimumSize(new Dimension(800, 800));
+        //fenetre.setResizable(true);
+        fenetre.pack();
 		fenetre.setVisible(true);
 	}
 	
@@ -67,7 +71,7 @@ public class Jeu extends Menu implements ActionListener {
 		} else if (e.getActionCommand().equals("Classement")) {
 			lancerClassement();
 		} else if (e.getActionCommand().equals("Quitter")) {
-			System.exit(1);
+			System.exit(0);
 		}
 		
 	}
