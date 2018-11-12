@@ -2,6 +2,7 @@ package projet;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -32,6 +33,7 @@ public class Menu implements ActionListener {
 	JButton buttonSudoku = new JButton("Sudoku");
 	JButton buttonClassement = new JButton("Classement");
 	JButton buttonQuitter = new JButton("Quitter");
+	GridBagConstraints gbc = new GridBagConstraints();
 	
 	public Menu() {
 		mainPanel.setLayout(new BorderLayout());
@@ -42,26 +44,24 @@ public class Menu implements ActionListener {
 	
 	public void setPanelButton() {
 		panelMenu.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.anchor = GridBagConstraints.NORTH;
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.weighty = 1;
 
-		panelMenu.add(buttonPendu,gbc);
-		panelMenu.add(buttonMotus,gbc);
-		panelMenu.add(buttonMotsMeles,gbc);
-		panelMenu.add(buttonSudoku,gbc);
-		panelMenu.add(buttonClassement,gbc);
-		panelMenu.add(buttonQuitter,gbc);
-		
-		buttonPendu.addActionListener(this);
-		buttonMotus.addActionListener(this);
-		buttonMotsMeles.addActionListener(this);
-		buttonSudoku.addActionListener(this);
-		buttonClassement.addActionListener(this);
-		buttonQuitter.addActionListener(this);
+		setButton(buttonPendu, 120, 40);
+		setButton(buttonMotus, 120, 40);
+		setButton(buttonMotsMeles, 120, 40);
+		setButton(buttonSudoku, 120, 40);
+		setButton(buttonClassement, 120, 40);
+		setButton(buttonQuitter, 120, 40);
+	}
+	
+	public void setButton(JButton button, int width, int height) {
+		button.setPreferredSize(new Dimension(width,height));
+		panelMenu.add(button,gbc);
+		button.addActionListener(this);
 	}
 	
 	public JPanel getPanelMenu() {

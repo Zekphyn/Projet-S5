@@ -27,8 +27,7 @@ public class Jeu extends Menu implements ActionListener {
         fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fenetre.setLocationRelativeTo(null);
         fenetre.setContentPane(getPanelMenu());
-        fenetre.setMinimumSize(new Dimension(800, 800));
-        //fenetre.setResizable(true);
+        fenetre.setMinimumSize(new Dimension(900, 768));
         fenetre.pack();
 		fenetre.setVisible(true);
 	}
