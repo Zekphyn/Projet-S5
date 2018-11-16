@@ -1,59 +1,7 @@
 package sudoku;
-import javax.swing.JFileChooser;
-<<<<<<< HEAD
-import java.util.ArrayList;
-import java.io.*;
-public class Grille {
-	int grille[][]=new int[9][9];
-	ArrayList<Position> tourJoues=new ArrayList<Position>(100);
-	public boolean estDansLigne (int chiffre ,int ligne )
-	{
-		
-		for(int i=0;i<9;i++)
-			if(this.grille[ligne][i]==chiffre)
-				return true;
-		return false;
-	}
-	
-	public boolean estDansColonne (int chiffre ,int colonne )
-	{
-		for(int i=0;i<9;i++)
-			if(this.grille[i][colonne]==chiffre)
-			return true;
-		return false;
-	}
-	
-	public boolean estDansRegion (int chiffre , Position pos  )
-	{
-		Position region=new Position();
-		Position trans = new Position();
-		trans.ligne=(pos.ligne/3)+1;
-		trans.colonne=(pos.colonne/3)+1;
-		region.ligne=(trans.ligne*3)-3;
-		region.colonne=(trans.colonne*3)-3;
-		
-		
-		
-		
-		for(int i=0; i<3 ; i++)
-		{
-			for(int j=0 ; j<3 ; j++)
-			{
-				if(this.grille[region.ligne+i][region.colonne+j]==chiffre)
-					return true;
-			}
-		}
-		return false ;
-	}
-	
-	
-	
-	public void lectureGrille()
-	{    BufferedReader reader ;
-		try {
-			reader = new BufferedReader(new FileReader(
-					"C:/Users/N&R/git/Projet-S5/src/sudoku/g.txt"));
-=======
+
+
+
 
 import java.util.ArrayList;
 import java.io.*;
@@ -105,9 +53,7 @@ public class Grille {
 	public void lectureGrille()
 	{    BufferedReader reader ;
 		try {
-			reader = new BufferedReader(new FileReader(
-					"src/sudoku/g.txt"));
->>>>>>> branch 'master' of https://github.com/Zekphyn/Projet-S5.git
+			reader = new BufferedReader(new FileReader("C:/Users/N&R/git/Projet-S5/src/sudoku/g.txt"));
 			
 			String line = reader.readLine();
 			int i=-1;
