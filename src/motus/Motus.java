@@ -81,7 +81,7 @@ public class Motus extends Jeu {
 		this.jeu = new String[nbCoupsMax];
 		Random random = new Random();
 		//Taille du mot aléatoire entre 7 et 10 lettres
-		this.tailleMot = random.nextInt(4)+7;
+		this.tailleMot = random.nextInt(4)+6;
 		motRech = dico.motAlea(tailleMot).toUpperCase();
 		this.trouve = new boolean[tailleMot];
 		this.trouve[0]=true;
@@ -151,7 +151,7 @@ public class Motus extends Jeu {
 			mot = Normalizer.normalize(mot, Normalizer.Form.NFD);
 			for(char c : mot.toCharArray()) {
 				if(c >= 'A' && c <= 'Z' )
-					motf = Character.toString(c);
+					motf = motf + Character.toString(c);
 			}
 		}
 		else

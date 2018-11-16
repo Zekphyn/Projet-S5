@@ -8,7 +8,5 @@ import motus.Motus;
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-		Motus motus = new Motus();
-		motus.jouerPartie();
 	}
 }
