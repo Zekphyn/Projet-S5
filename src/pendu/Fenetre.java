@@ -3,6 +3,7 @@ package pendu;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -16,7 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-public class Fenetre extends JFrame implements Observer{
+public class Fenetre extends JPanel implements Observer{
 
 	private JMenuBar menu = null;
 
@@ -38,11 +39,11 @@ public class Fenetre extends JFrame implements Observer{
               'u', 'v', 'w', 'x', 'y', 'z'};
 	  
 	public Fenetre(Observable obs){
-		this.setTitle("Le pendu");
+		/*this.setTitle("Le pendu");
 	    this.setSize(900, 600);
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    this.setLocationRelativeTo(null);
-	    this.setResizable(false);
+	    this.setResizable(false);*/
 	    
 	    this.model = obs;
 	    this.model.addObserver(this);
@@ -130,11 +131,18 @@ public class Fenetre extends JFrame implements Observer{
 	    this.conteneur.setPreferredSize(this.size);
 	    this.conteneur.setBackground(Color.white);
 	    this.conteneur.add(new AccueilPanel(this.size).getPanel());
-	    this.setContentPane(this.conteneur);
+	    //this.setContentPane(this.conteneur);
 	    
-	    this.setJMenuBar(menu);
+	    //this.setJMenuBar(menu);
 	}
 	
+	public JMenuBar getMenu() {
+		return menu;
+	}
+	
+	public JPanel getPanel() {
+		return conteneur;
+	}
 	public void showScore(Score[] list){
 		conteneur.removeAll();
 		conteneur.add(new ScorePanel(this.size, list).getPanel(), BorderLayout.CENTER);

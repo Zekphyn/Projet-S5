@@ -55,7 +55,11 @@ public class GrilleLettres {
 	{    BufferedReader reader ;
 		try {
 			reader = new BufferedReader(new FileReader(
+<<<<<<< HEAD
 					"C:/Users/N&R/git/Projet-S5/src/sudoku/gl.txt"));
+=======
+					"src/sudoku/gl.txt"));
+>>>>>>> branch 'master' of https://github.com/Zekphyn/Projet-S5.git
 			
 			String line = reader.readLine();
 			int i=-1;

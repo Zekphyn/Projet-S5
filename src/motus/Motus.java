@@ -1,6 +1,5 @@
 package motus;
 
-
 import java.io.IOException;
 import java.text.Normalizer;
 import java.util.Random;
@@ -20,21 +19,69 @@ public class Motus extends Jeu {
 	private int tailleMot;
 	private int nbCoups;
 	private int nbCoupsMax;
+	
+	public Dictionnaire getDico() {
+		return dico;
+	}
 
-	public Motus(int nbCoupsMax) throws IOException
+	public String getMotRech() {
+		return motRech;
+	}
+
+
+	public Joueur getJoueur() {
+		return joueur;
+	}
+
+
+	public boolean[] getTrouve() {
+		return trouve;
+	}
+
+
+	public String[] getJeu() {
+		return jeu;
+	}
+
+
+	public int[][] getTabVerif() {
+		return tabVerif;
+	}
+	
+	public int getTabVerif(int i, int j) {
+		return tabVerif[i][j];
+	}
+
+	public int getTailleMot() {
+		return tailleMot;
+	}
+
+
+	public int getNbCoups() {
+		return nbCoups;
+	}
+
+
+	public int getNbCoupsMax() {
+		return nbCoupsMax;
+	}
+
+
+	public Motus() throws IOException
 	{
 		this.dico = new Dictionnaire();
 		this.joueur=joueur;
 		this.nbCoups = 0;
-		if(nbCoupsMax<0) {
-			this.nbCoupsMax = 10;
-		}
-		else
-			this.nbCoupsMax=nbCoupsMax;
+		//if(nbCoupsMax<0) {
+			//this.nbCoupsMax = 10;
+		//}
+		//else
+			//this.nbCoupsMax=nbCoupsMax;
+		this.nbCoupsMax=10;
 		this.jeu = new String[nbCoupsMax];
 		Random random = new Random();
 		//Taille du mot aléatoire entre 7 et 10 lettres
-		this.tailleMot = random.nextInt(4)+7;
+		this.tailleMot = random.nextInt(4)+6;
 		motRech = dico.motAlea(tailleMot).toUpperCase();
 		this.trouve = new boolean[tailleMot];
 		this.trouve[0]=true;
@@ -42,7 +89,6 @@ public class Motus extends Jeu {
 			trouve[i]=false;
 		this.tabVerif = new int[nbCoupsMax][tailleMot];
 	}
-	
 	
 	private void affichage1() {
 		for(int i=0; i<tailleMot; i++) {
@@ -105,7 +151,7 @@ public class Motus extends Jeu {
 			mot = Normalizer.normalize(mot, Normalizer.Form.NFD);
 			for(char c : mot.toCharArray()) {
 				if(c >= 'A' && c <= 'Z' )
-					motf = motf.concat("" + c);
+					motf = motf + Character.toString(c);
 			}
 		}
 		else
@@ -154,25 +200,31 @@ public class Motus extends Jeu {
 				this.trouve[i]= true;
 	}
 	
-	public void jouer()
+	
+	public boolean jouerCoup(Scanner sc)
 	{
-		boolean [] trouve = new boolean[tailleMot];
-		Scanner sc = new Scanner(System.in);
-		trouve[0]= true;
 		String motSaisi;
+		motSaisi = saisieMot(sc).toUpperCase();
+		jeu[nbCoups]=motSaisi;
+		if(this.dico.motExiste(motSaisi))
+		{
+			verify(motSaisi);
+			majTrouve();
+		}
+		affichage2();
+		this.nbCoups++;
+		return partieGagnee(motSaisi);
+	}
+	
+	public void jouerPartie()
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("azerty");
+		trouve[0]= true;
 		boolean gagner = false;
 		while(nbCoups != nbCoupsMax && !gagner) {
 			affichage1();
-			motSaisi = saisieMot(sc).toUpperCase();
-			System.out.println("coup numero "+ (nbCoups+1)+ "\n\n");
-			jeu[nbCoups] = motSaisi;
-			if(this.dico.motExiste(motSaisi)) {
-				verify(motSaisi);
-				majTrouve();
-			}
-			affichage2();
-			nbCoups++;
-			gagner = partieGagnee(motSaisi);
+			gagner = jouerCoup(sc);
 		}
 		sc.close();
 	}
