@@ -1,6 +1,17 @@
 package sudoku;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.*;
+import javax.swing.*;
 
-public class Test {
+
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+
+public class Test extends JFrame {
 
 	public static void main(String[] args) {
 		/** 
@@ -28,7 +39,7 @@ public class Test {
 		//g.afficheGrille();
 		//System.out.println("Ligne :"+g.estDansLigne(2, 3));
 		//System.out.println("Colonne :"+g.estDansColonne(2, 5))
-		**/
+		
 		GrilleLettres grilleLettres = new GrilleLettres ();
 		grilleLettres.lectureGrille();
 		System.out.println(grilleLettres.getUtilisable());
@@ -38,8 +49,34 @@ public class Test {
 		grilleLettres.afficheGrille();
 		grilleLettres.enleverValeur(1, 2);
 		grilleLettres.afficheGrille();
+		**/
+		// Test pour JPanel
+		
+	    
+       /** 
+        sudokuPanel.setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
+        sudokuPanel.setBackground(Color.BLACK);
+        
+        f.add(sudokuPanel);
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.add(new JButton("Regenerate"));
+
+        f.setLayout(new BorderLayout());
+        f.add(sudokuPanel, BorderLayout.CENTER);
+        f.add(bottomPanel, BorderLayout.PAGE_END);
+        **/
 		
 	}
+	/**for (int row = 0; row < 9; row++) {
+    for (int col = 0; col < 9; col++) {
+        g[row][col] = new JTextField(String.valueOf(gr.grille[row][col]));
+        //g[row][col].setFont(LABEL_FONT); // make it big
+        g[row][col].setOpaque(true);
+        g[row][col].setBackground(Color.WHITE);
+        sudokuPanel.add(g[row][col]);
+    }
+}
+**/
 	
 
 }
