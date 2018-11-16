@@ -18,6 +18,7 @@ public class ImageLabel extends JLabel{
 	}
 	
 	public void paint(Graphics g){
+		System.out.println("bonjour");
 			g.setColor(Color.red);
 			g.drawRect(0, 0, this.getWidth(), this.getHeight());
 			try {

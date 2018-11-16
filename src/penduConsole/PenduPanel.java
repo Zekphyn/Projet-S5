@@ -79,7 +79,7 @@ public class PenduPanel extends JPanel implements ActionListener{
 			i++;
 		}
 		
-		erreur = new JLabel("Vous avez le droit à "+(5 -pendu.mot.getNombreErreur())+" erreurs.");
+		erreur = new JLabel("Vous avez le droit à "+(5 -pendu.mot.getNombreErreur())+" erreurs. ");
 		erreur.setFont(new Font("Arial",Font.BOLD, 20));
 		erreur.setHorizontalAlignment(JLabel.CENTER);
 

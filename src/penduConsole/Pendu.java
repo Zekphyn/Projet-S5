@@ -15,7 +15,7 @@ public class Pendu {
 	
 	public int NouvellePartie() {
 		int resultat = 0;
-		System.out.println("Bienvenue dans le jeu du pendu");
+		System.out.println("Bienvenue dans le jeu du pendu ");
 		Scanner scan = new Scanner(System.in); 
 		while(!this.mot.estFini() && this.mot.getNombreErreur() < 5 ) {
 			System.out.println(this.mot.getMotSecret());

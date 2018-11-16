@@ -32,7 +32,7 @@ public class Jeu extends Menu implements ActionListener {
 	}
 	
 	public void lancerPendu() {
-		System.out.println("doit lancer le pendu");
+		System.out.println("doit lancer le pendu ");
 		fenetre.setContentPane(new PenduPanel());
 		fenetre.revalidate();
 	}
