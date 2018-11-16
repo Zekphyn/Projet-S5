@@ -6,7 +6,7 @@ public class Joueur {
 	@CsvBindByName
 	private String nom;
 	@CsvBindByName
-	private int score;
+	private String score;
 	@CsvBindByName
 	private String jeu;
 	
@@ -14,10 +14,10 @@ public class Joueur {
 		
 	}
 	
-	public Joueur(String Jeu, String nom, int score) {
+	public Joueur(String jeu, String nom, String score) {
 		this.nom=nom;
 		this.score=score;
-		this.jeu=jeu;
+		this.jeu = jeu;
 	}
 
 	public String getNom() {
@@ -28,11 +28,11 @@ public class Joueur {
 		this.nom = nom;
 	}
 
-	public int getScore() {
+	public String getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
+	public void setScore(String score) {
 		this.score = score;
 	}
 
