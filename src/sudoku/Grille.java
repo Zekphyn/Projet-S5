@@ -4,8 +4,19 @@ package sudoku;
 
 
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
-public class Grille {
+public class Grille extends JFrame implements ActionListener {
 	int grille[][]=new int[9][9];
 	ArrayList<Position> tourJoues=new ArrayList<Position>(100);
 	public boolean estDansLigne (int chiffre ,int ligne )
@@ -206,7 +217,54 @@ public class Grille {
     	return false;
     }
     
-	
+    public void creation()
+    {
+    	
+    	// Creation de la matrice
+		JButton  cases[][] = new JButton[9][9];
+		GridLayout grille;
+		Container c;
+		c = getContentPane();
+		JPanel panel = new JPanel();
+		grille = new GridLayout(3,3);
+		panel.setLayout(grille);
+		JPanel panelGeneral = new JPanel();
+		panelGeneral.setLayout(new BorderLayout());
+		panelGeneral.add(panel, BorderLayout.CENTER);
+		
+    	// Creation des JPanels : 
+    			JPanel[][] jp = new JPanel[3][3];
+    			for(int i=0;i<3;i++)
+    			{
+    				for(int j=0;j<3;j++)
+    				{
+    					jp[i][j] = new JPanel();
+    					(jp[i][j]).setLayout(new GridLayout(3,3));
+    					(jp[i][j]).setBorder(BorderFactory.createEtchedBorder());
+    				}
+    			}
+    			
+    			
+    			
+    			// Lecture grille
+    			
+    			
+    			for(int i=0;i<9;i++)
+    				for(int j=0;j<9;j++)
+    				{
+    					if (this.grille[i][j]==0)
+    						cases[i][j]=new JButton("");
+    					else cases[i][j]=new JButton(Integer.toString(this.grille[i][j])) ;
+    					cases[i][j].addActionListener(this);
+    				}
+    			c.add(panelGeneral);
+    			show();
+    			
+    			
+    }
+    
+    public void actionPerformed(ActionEvent evt)
+	{};
 	
 	
 	

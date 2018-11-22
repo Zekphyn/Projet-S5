@@ -3,21 +3,26 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.event.DocumentEvent;
+
+import java.awt.BorderLayout;
 import java.awt.Color;
+import javax.swing.border.*;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
 
-public class TestJ {
+public class TestJ  {
 
 	public static void main(String[] args) {
-		Grille gr = new Grille();
+		/**Grille gr = new Grille();
 		gr.lectureGrille();
 
 	    int GAP = 1;
@@ -89,15 +94,17 @@ public class TestJ {
         	      {
         	    	  String valeur=null;
         	    	  valeur=text.getText();
-        	      }**/
+        	      }
         	      private void printIt(DocumentEvent documentEvent) 
         	      	{
         	          DocumentEvent.EventType type = documentEvent.getType();
         	          String typeString = null;
         	          if (type.equals(DocumentEvent.EventType.CHANGE)) {
         	            typeString = "Change"; 
+        	            
         	          }  else if (type.equals(DocumentEvent.EventType.INSERT)) {
         	            typeString = "Insert";
+        	            
         	          }  else if (type.equals(DocumentEvent.EventType.REMOVE)) {
         	            typeString = "Remove";
         	          }
@@ -110,9 +117,8 @@ public class TestJ {
         	        try {
         	        	String chaine=source.getText(0, source.getLength());
         	        	int valeur = Integer.parseInt(chaine);
-        	        	
-        	        	
-        	        	System.out.println("Valeur = "+valeur+" inseree a la ligne ");}
+        	        	System.out.println("Valeur = "+valeur+" inseree a la ligne ");
+        	        	}
         	        catch (BadLocationException e) {}
         	        
         	          
@@ -123,6 +129,13 @@ public class TestJ {
         	for(int i=0;i<9;i++)
         		for(int j=0;j<9;j++)
         			tfCells[i][j].contenu.getDocument().addDocumentListener(documentListener);
+        	**/
+		
+		Grille g = new Grille();
+		g.lectureGrille();
+		g.creation();
+		
+		
 	}
 }
 	    
