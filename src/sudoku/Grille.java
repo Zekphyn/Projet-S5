@@ -37,7 +37,7 @@ public class Grille extends JFrame implements ActionListener {
 	GridLayout grille;
 	JMenu menuFichier;
 	JMenuBar menu;
-	JMenuItem enregistrer,fermer,nouveau,nouveauAlea,ouvrir,enregistrer_sous,enregistrerModele,effacer,resoudre;
+	JMenuItem fermer,ouvrir,resoudre;
 	
 	// Constructeur par defaut qui cree la grille et la fenetre en placant tous les elements et l'affiche
 	public Grille()
@@ -59,40 +59,22 @@ public class Grille extends JFrame implements ActionListener {
 		menuFichier= new JMenu("Fichier");
 		ouvrir=new JMenuItem("Ouvrir");
 		fermer=new JMenuItem("Fermer");
-		nouveau=new JMenuItem("Nouvelle Grille");
-		effacer=new JMenuItem("Effacer la grille");
-		nouveauAlea=new JMenuItem("Nouvelle grille aléatoire");
-		enregistrer=new JMenuItem("Enregistrer");
-		enregistrer_sous=new JMenuItem("Enregistrer sous");
-		enregistrerModele=new JMenuItem("Entegistrer comme modele");
 		resoudre= new JMenuItem("Resoudre ce sudoku");
 		
 		
 		// On ajoute les elements au menu
-		menuFichier.add(nouveau);
-		menuFichier.add(nouveauAlea);
-		menuFichier.addSeparator();
+		
 		menuFichier.add(ouvrir);
-		menuFichier.add(fermer);
-		menuFichier.addSeparator();
-		menuFichier.add(effacer);
-		menuFichier.addSeparator();
-		menuFichier.add(enregistrer);
-		menuFichier.add(enregistrer_sous);
-		menuFichier.add(enregistrerModele);
 		menuFichier.addSeparator();
 		menuFichier.add(resoudre);
+		menuFichier.addSeparator();
+		menuFichier.add(fermer);
+		
 		menu.add(menuFichier);
 		
 		// On ajoute les ListenerS aux elements du menu
 		ouvrir.addActionListener(this);
-		nouveau.addActionListener(this);
-		nouveauAlea.addActionListener(this);
 		fermer.addActionListener(this);
-		effacer.addActionListener(this);
-		enregistrer.addActionListener(this);
-		enregistrer_sous.addActionListener(this);
-		enregistrerModele.addActionListener(this);
 		resoudre.addActionListener(this);
 		setJMenuBar(menu);
 		
