@@ -15,7 +15,7 @@ import java.awt.GridLayout;
 public class Test  {
 
 	public static void main(String[] args) {
-		
+	/**	
 		 Grille g = new Grille();
 		 
 		g.lectureGrille();
@@ -67,7 +67,7 @@ public class Test  {
         f.add(bottomPanel, BorderLayout.PAGE_END);
         **/
 		
-	}
+	
 	/**for (int row = 0; row < 9; row++) {
     for (int col = 0; col < 9; col++) {
         g[row][col] = new JTextField(String.valueOf(gr.grille[row][col]));
@@ -78,5 +78,8 @@ public class Test  {
     }
 }
 **/
-	
+		
+	//Jeu j = new Jeu("C:/Users/N&R/git/Projet-S5/src/sudoku/g.txt");
+	Grille g = new Grille();
+}
 }

@@ -132,8 +132,8 @@ public class TestJ  {
         	**/
 		
 		Grille g = new Grille();
-		g.lectureGrille();
-		g.creation();
+		//g.lectureGrille();
+		//g.creation();
 		
 		
 	}

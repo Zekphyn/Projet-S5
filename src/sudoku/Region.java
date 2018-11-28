@@ -42,7 +42,7 @@ public class Region {
 	}
 	
 	// Accesseur de fixe qui retourne l'etat de la case de coordonnees i,j dans la region
-	public boolean getCaseFice(int i, int j)
+	public boolean getCaseFixe(int i, int j)
 	{
 		return (region[i][j]).getFixe();
 	}
@@ -115,6 +115,35 @@ public class Region {
 			p++;
 		}
 		return true;
+	}
+	
+	// Verifie si la valeur ajoutee a la region ne la rend pas invalide
+	public boolean regionValide(int i,int j,int val)
+	{
+		if(val==0)
+			return false;
+		for(int l=0;l<3;l++)
+			for(int c=0;c<3;c++)
+			{
+				if(this.getCaseNum(l, c)==val)
+					return false;
+			}
+		return true;
+	}
+	
+	// Afficher une region
+	public String toString()
+	{
+		StringBuffer sb=new StringBuffer();
+		for(int i=0;i<3;i++)
+		{
+			for(int j=0;j<3;j++)
+				sb.append(region[i][j]+" ");
+			sb.append("\n");
+		}
+		sb.append("\n");
+		return sb.toString();
+		
 	}
 	
 	
