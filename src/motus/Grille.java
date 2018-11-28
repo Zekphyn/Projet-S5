@@ -3,17 +3,18 @@ package motus;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
-import javax.swing.text.StyleConstants;
 
 public class Grille extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public int longueur;
 	public int largeur;
 	private Color couleurLignes ;
@@ -27,10 +28,7 @@ public class Grille extends JPanel{
 		this.longueur=motus.getNbCoupsMax();
 		this.largeur=motus.getTailleMot();
 		couleurLignes = Color.BLACK;
-		this.setPreferredSize(new Dimension(500,500));
 		majGrille();
-
-
 	}
 	
 /*	public void initGrille() {
@@ -55,6 +53,8 @@ public class Grille extends JPanel{
 	public void ajouter(char c) {
 		Border blackline = BorderFactory.createLineBorder(couleurLignes,1); 
 		JLabel text = new JLabel(Character.toString(c) ,JLabel.CENTER);
+		text.setMinimumSize(new Dimension(75,75));
+		text.setPreferredSize(new Dimension(100,100));
 		text.setFont(new Font("Serif", Font.PLAIN, 36));
 		text.setBorder(blackline);
 		add(text);
@@ -63,6 +63,7 @@ public class Grille extends JPanel{
 	public void ajouter(char c, int i, int j) {
 		Border blackline = BorderFactory.createLineBorder(couleurLignes,1); 
 		JLabel text = new JLabel(Character.toString(c) ,JLabel.CENTER);
+		text.setMinimumSize(new Dimension(100,100));
 		text.setFont(new Font("Serif", Font.PLAIN, 36));
 		text.setBorder(blackline);
 		if(motus.getTabVerif()[i][j]==1) {
@@ -77,22 +78,31 @@ public class Grille extends JPanel{
 	}
 	
 	public void majGrille() {
+		int i;
+		int j;
 		setLayout(new GridLayout(longueur,largeur));
-		for(int i=  0 ; i<this.motus.getNbCoups(); i++) {	
-			for(int j = 0; j< largeur;j++) {
+		for(i=  0 ; i<this.motus.getNbCoups(); i++) {	
+			for( j = 0; j< largeur;j++) {
 				ajouter(this.motus.getJeu()[i].charAt(j),i,j);
 			}
 		}
-		if(this.motus.getNbCoups()<this.motus.getNbCoupsMax()) 
-			for(int j =0 ; j< largeur; j++) {
-				if(motus.getTrouve()[j] == true)
-					ajouter(motus.getMotRech().charAt(j));
-				else
+		if(motus.getGagne()==false) {
+			if(this.motus.getNbCoups()<this.motus.getNbCoupsMax())
+				for( j =0 ; j< largeur; j++) {
+					if(motus.getTrouve()[j] == true)
+						ajouter(motus.getMotRech().charAt(j));
+					else
+						ajouter('.');
+					}
+			for(i=motus.getNbCoups()+1;i<longueur;i++)
+				for( j=0; j < largeur ;j++)
+					ajouter(' ');
+			}
+		else
+		{
+			for(i=motus.getNbCoups();i<longueur;i++)
+				for( j=0; j < largeur ;j++)
 					ajouter(' ');
 		}
-		
-			for(int i=this.motus.getNbCoups()+1;i<longueur;i++)
-				for(int j=0; j < largeur ;j++)
-					ajouter(' ');
 	}
 }

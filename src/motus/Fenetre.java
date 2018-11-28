@@ -1,29 +1,22 @@
 package motus;
 
-import java.awt.Color;
-import java.io.IOException;
-import java.util.Scanner;
-
+import java.awt.Dimension;
 import javax.swing.*;
 
-public class Fenetre extends JFrame{
-	private Motus motus;
+public class Fenetre extends JPanelMotus{
+	 //JTextField texte;
+	 //JLabel label = new JLabel("Un JTextField");
+	// JButton b;
+	  JFrame fenetre;
+	
 	public Fenetre() {
-		Scanner sc = new Scanner(System.in);
-		try {
-			this.motus=new Motus();
-		} catch (IOException e) {
-		}
-		this.setTitle("Motus");
-		this.setSize(1000,1000);
-		JPanel pan = new JPanelMotus(getGraphics(),motus);
-		this.setContentPane(pan);
-		this.setVisible(true);
-		while(motus.getNbCoups()<motus.getNbCoupsMax()) {
-			motus.jouerCoup(sc);
-		    pan = new JPanelMotus(getGraphics(),motus);
-			this.setContentPane(pan);
-			this.setVisible(true);
-		}
+		fenetre = new JFrame("Motus");
+		fenetre.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fenetre.setLocationRelativeTo(null);
+		fenetre.setContentPane(getJPanelMotus());
+		fenetre.setMinimumSize(new Dimension(900,768));
+		fenetre.pack();
+		fenetre.setVisible(true);	
 	}
 }

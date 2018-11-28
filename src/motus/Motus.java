@@ -1,9 +1,9 @@
 package motus;
 
 import java.io.IOException;
-import java.text.Normalizer;
+//import java.text.Normalizer;
 import java.util.Random;
-import java.util.Scanner;
+
 
 import projet.Dictionnaire;
 import projet.Jeu;
@@ -19,7 +19,11 @@ public class Motus extends Jeu {
 	private int tailleMot;
 	private int nbCoups;
 	private int nbCoupsMax;
+	private boolean gagne;
 	
+	public boolean getGagne() {
+		return gagne;
+	}
 	public Dictionnaire getDico() {
 		return dico;
 	}
@@ -70,17 +74,17 @@ public class Motus extends Jeu {
 	public Motus() throws IOException
 	{
 		this.dico = new Dictionnaire();
-		this.joueur=joueur;
+		//this.joueur=joueur;
 		this.nbCoups = 0;
 		//if(nbCoupsMax<0) {
 			//this.nbCoupsMax = 10;
 		//}
 		//else
 			//this.nbCoupsMax=nbCoupsMax;
-		this.nbCoupsMax=10;
+		this.nbCoupsMax=6;
 		this.jeu = new String[nbCoupsMax];
 		Random random = new Random();
-		//Taille du mot aléatoire entre 7 et 10 lettres
+		//Taille du mot aléatoire entre 6 et 9 lettres
 		this.tailleMot = random.nextInt(4)+6;
 		motRech = dico.motAlea(tailleMot).toUpperCase();
 		this.trouve = new boolean[tailleMot];
@@ -88,9 +92,10 @@ public class Motus extends Jeu {
 		for(int i=1;i<tailleMot;i++)
 			trouve[i]=false;
 		this.tabVerif = new int[nbCoupsMax][tailleMot];
+		this.gagne = false;
 	}
 	
-	private void affichage1() {
+	/*private void affichage1() {
 		for(int i=0; i<tailleMot; i++) {
 			if(trouve[i])
 				System.out.print(motRech.charAt(i));
@@ -116,9 +121,10 @@ public class Motus extends Jeu {
 			if(tabVerif[nbCoups][i]==2)
 				System.out.print(" " + i + "("+ jeu[nbCoups].charAt(i) + ")" );
 		System.out.println("\n");
-	}
+	}*/
 	
-	public String saisieMot(Scanner sc) {
+
+	/*public String saisieMot(Scanner sc) {
 		String str = "";
 		boolean motChar = false;
 		while(!(str.length() == tailleMot) || !motChar) {
@@ -156,17 +162,18 @@ public class Motus extends Jeu {
 		}
 		else
 			motf=mot;
-		return motf;
-	}
+		return motf; 
+	}*/
 	
 	
-	public boolean partieGagnee(String mot)
+	public void partieGagnee(String mot)
 	{
 		if(mot.compareTo(motRech)== 0) {
 			System.out.println("bravo vous avez gagné en " + nbCoups + " coups");
-			return true;
+			this.gagne = true;
 		}
-		return false;
+		else
+			this.gagne = false;
 	}
 	
 	//0 pour pas dans le mot, 1 dedans, 2 si mal placé
@@ -201,22 +208,20 @@ public class Motus extends Jeu {
 	}
 	
 	
-	public boolean jouerCoup(Scanner sc)
+	public void jouerCoup(String motSaisi)
 	{
-		String motSaisi;
-		motSaisi = saisieMot(sc).toUpperCase();
 		jeu[nbCoups]=motSaisi;
 		if(this.dico.motExiste(motSaisi))
 		{
 			verify(motSaisi);
 			majTrouve();
 		}
-		affichage2();
+		//affichage2();
 		this.nbCoups++;
-		return partieGagnee(motSaisi);
+		partieGagnee(motSaisi);
 	}
 	
-	public void jouerPartie()
+/*	public void jouerPartie()
 	{
 		Scanner sc = new Scanner(System.in);
 		System.out.println("azerty");
@@ -224,9 +229,9 @@ public class Motus extends Jeu {
 		boolean gagner = false;
 		while(nbCoups != nbCoupsMax && !gagner) {
 			affichage1();
-			gagner = jouerCoup(sc);
+			jouerCoup(sc);
 		}
 		sc.close();
 	}
-	
+	*/
 }
