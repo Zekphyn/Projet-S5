@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class Jeu extends Menu implements ActionListener {
-	
+	static Classement classement = new Classement();
 	public static void main(String[] args){
 		new Jeu("Jeu");
 	}
@@ -50,7 +50,12 @@ public class Jeu extends Menu implements ActionListener {
 	}
 	
 	public void lancerClassement() {
-		System.out.println("doit afficher les classements");
+		JTextArea textArea = new JTextArea(classement.toString());
+		JScrollPane scrollPane = new JScrollPane(textArea);  
+		textArea.setLineWrap(true);  
+		textArea.setWrapStyleWord(true); 
+		scrollPane.setPreferredSize( new Dimension( 400, 600 ) );
+		JOptionPane.showMessageDialog(null, scrollPane, "Classement",  JOptionPane.PLAIN_MESSAGE);
 	}
 	
 	@Override

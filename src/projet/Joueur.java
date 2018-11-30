@@ -46,6 +46,6 @@ public class Joueur {
 	
 	@Override
 	public String toString() {
-		return "Jeu : " + jeu + " Nom : " +  nom + " Score : " + score ;
+		return jeu + " : " + nom + "  -  " + score ;
 	}
 }
