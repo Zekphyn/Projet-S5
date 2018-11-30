@@ -15,6 +15,8 @@ import java.awt.GridLayout;
 public class Test  {
 
 	public static void main(String[] args) {
-		Grille g = new Grille();
+		//Grille g = new Grille();
+		GrilleLettres gl=new GrilleLettres();
+		
 }
 }

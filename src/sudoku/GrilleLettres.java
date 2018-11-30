@@ -1,179 +1,356 @@
 package sudoku;
 
 
-import java.io.*;
+
+
 import java.util.ArrayList;
 
-public class GrilleLettres {
-	char grille[][]=new char[9][9];
-	ArrayList<Position> tourJoues=new ArrayList<Position>(100);
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
-	String utilisable="";
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+public class GrilleLettres extends JFrame implements ActionListener {
+	JeuLettres jeu;
 	
+	// Fichier courant
+	File fichierCourant;
+	Container c;
+	JPanel panel  , panelGeneral;
+	JPanel[][] jp = new JPanel[3][3];
 	
-	public boolean estDansLigne (char lettre ,int ligne )
+	// Boutons représentants les cases 
+	JButton cases[][]=new JButton[9][9];
+	GridLayout grille;
+	JMenu menuFichier;
+	JMenuBar menu;
+	JMenuItem fermer,ouvrir,resoudre;
+	
+	// Constructeur par defaut qui cree la grille et la fenetre en placant tous les elements et l'affiche
+	public GrilleLettres()
 	{
+		// On cree la fenetre
+		super("Sudoku");
 		
-		for(int i=0;i<9;i++)
-			if(this.grille[ligne][i]==lettre)
-				return true;
-		return false;
-	}
-	
-	public boolean estDansColonne (char lettre ,int colonne )
-	{
-		for(int i=0;i<9;i++)
-			if(this.grille[i][colonne]==lettre)
-			return true;
-		return false;
-	}
-	
-	public boolean estDansRegion (char lettre , Position pos  )
-	{
-		Position region=new Position();
-		Position trans = new Position();
-		trans.ligne=(pos.ligne/3)+1;
-		trans.colonne=(pos.colonne/3)+1;
-		region.ligne=(trans.ligne*3)-3;
-		region.colonne=(trans.colonne*3)-3;
+		// On cree le jeu
+		jeu=new JeuLettres();
+		
+		// On definit la fin du programme a la fermeture de la fenetre
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		
+		// La taille de la fenetre
+		setSize(650,650);
+		
+		// On ajoute la barre des menus
+		menu = new JMenuBar();
+		menuFichier= new JMenu("Fichier");
+		ouvrir=new JMenuItem("Ouvrir");
+		fermer=new JMenuItem("Fermer");
+		resoudre= new JMenuItem("Resoudre ce sudoku");
 		
 		
+		// On ajoute les elements au menu
 		
+		menuFichier.add(ouvrir);
+		menuFichier.addSeparator();
+		menuFichier.add(resoudre);
+		menuFichier.addSeparator();
+		menuFichier.add(fermer);
 		
-		for(int i=0; i<3 ; i++)
-		{
-			for(int j=0 ; j<3 ; j++)
+		menu.add(menuFichier);
+		
+		// On ajoute les ListenerS aux elements du menu
+		ouvrir.addActionListener(this);
+		fermer.addActionListener(this);
+		resoudre.addActionListener(this);
+		setJMenuBar(menu);
+		
+		// On cree un conteneur et un panel avec une GridLayout puis on ajoute les boutons
+		c = getContentPane();
+		grille= new GridLayout(3,3);
+		panel= new JPanel();
+		panel.setLayout(grille);
+		panelGeneral=new JPanel();
+		panelGeneral.setLayout(new BorderLayout());
+		panelGeneral.add(panel,BorderLayout.CENTER);
+		
+		// On cree les panels qui representent les 9 regions de 3x3 cases
+		for(int i=0;i<3;i++)
+			for(int j=0;j<3;j++)
 			{
-				if(this.grille[region.ligne+i][region.colonne+j]==lettre)
-					return true;
+				jp[i][j]= new JPanel();
+				(jp[i][j]).setLayout(grille);
+				(jp[i][j]).setBorder(BorderFactory.createEtchedBorder());
 			}
-		}
-		return false ;
-	}
-	
-	public void lectureGrille()
-	{    BufferedReader reader ;
-		try {
-			reader = new BufferedReader(new FileReader(
-					"C:/Users/N&R/git/Projet-S5/src/sudoku/gl.txt"));
-
-					
-			
-			String line = reader.readLine();
-			int i=-1;
-			
-			while (line != null) {
-				i++;
-				
-					for(int j=0;j<9;j++)
-					{	
-						char c=line.charAt(j);
-						grille[i][j] =c ;
-						if(  (!(this.utilisable.contains(Character.toString(c)))) && ( c!='0') ) 
-							this.utilisable+=Character.toString(c);
-					}
-				// read next line
-				line = reader.readLine();
-	                
-			}
-			reader.close();
-	                 
-	                
-	                
-	          } catch(Exception exc) {
-	              System.err.println("Ouverture impossible : fichier inexistant ou mal complété.");
-	          }
-	         
-	       
-	    
-	}
-	
-	public void afficheGrille()
-	{
+		
+		// On cree les boutons et on les ajoute aux panels
+		
 		for(int i=0;i<9;i++)
 		{
 			for(int j=0;j<9;j++)
 			{
-				if(this.grille[i][j]!='0')
-					System.out.print(this.grille[i][j]);
-				else System.out.print(".");
+				Integer in = new Integer((jeu.getCaseChar(i, j)));
+				
+				if (in==0)
+					cases[i][j]=new JButton("");
+				else 
+					cases[i][j]=new JButton(in.toString());
+				
+				if(jeu.getCaseFixe(i, j))
+					(cases[i][j]).setFont(new java.awt.Font("Helvetic",java.awt.Font.BOLD,25));
+				else(cases[i][j]).setFont(new java.awt.Font("Helvetica",java.awt.Font.PLAIN,25));
+				
+				(cases[i][j]).setSize(10,10);
+				
+				(jp[(int)(i/3)][(int)(j/3)]).add(cases[i][j]);
+				
+				panel.add(jp[(int)(i/3)][(int)(j/3)]);
+				
+				// On ajoute un Listener au bouton i,j
+				(cases[i][j]).addActionListener(this);
+				
+				
 			}
-			System.out.println();
+		}
+		c.add(panelGeneral);
+		
+		// on affiche la fenetre 
+		show();
+		
+	}
+	
+	
+	// Afficher les cases fixe en gras
+	public void boutonFixe(int i , int j)
+	{
+		if(jeu.getCaseFixe(i, j))
+			(cases[i][j]).setFont(new java.awt.Font("Helvetica",java.awt.Font.BOLD,25));
+	}
+	
+	// Colore ( ou decolore ) les colonnes , les lignes et les regions apres verification
+	public void verif(int i,int j)
+	{
+		this.boutonFixe(i, j);
+		this.coloreRegion(i,j);
+		
+		if(jeu.ligneComplete(i))
+			coloreLigne(i);
+		else decoloreLigne(i);
+		
+		if(jeu.colonneComplete(j))
+			coloreColonne(j);
+		else decoloreColonne(j);
+		
+		if(jeu.gagne())
+			JOptionPane.showMessageDialog(this, " Vous avez gagné , quel champion !", "Félicitations", JOptionPane.PLAIN_MESSAGE);
+	}
+	
+	
+	// Colore la region si elle contient tous les chiffres de 1 a 9
+	public void coloreRegion(int i,int j)
+	{
+		// On verifie si la region de la case ,sur laquelle on a cliqué , est valide , si oui on la colorie
+		if (jeu.getRegionDeCase(i, j).regionComplete())
+			(jp[(int)(i/3)][(int)(j/3)]).setBorder(BorderFactory.createLineBorder(Color.RED));
+		else
+			(jp[(int)(i/3)][(int)(j/3)]).setBorder(BorderFactory.createEtchedBorder());
+		
+	}
+	
+		
+	// Colore la ligne si elle contient tout les chiffres de 1 a 9
+	public void coloreLigne(int i)
+	{
+		for(int j=0;j<9;j++)
+		{
+			if(cases[i][j].getForeground()==Color.GREEN)
+			{
+				(cases[i][j]).setForeground(Color.RED);
+				this.boutonFixe(i, j);
+			}	
+			
+			else
+			{
+				(cases[i][j]).setForeground(Color.BLUE);
+				(cases[i][j]).setFont(new java.awt.Font("Helvetica", java.awt.Font.PLAIN ,25));
+				this.boutonFixe(i, j);
+			}
+		}
+	
+				
+	}
+	
+	// Decolore la ligne si elle ne contient plus les chiffres de 1 a 9
+	public void decoloreLigne(int i)
+	{
+		for(int j=0;j<9;j++)
+		{
+			if( (cases[i][j].getForeground()==Color.RED) || ( cases[i][j].getForeground()== Color.GREEN ))
+			{
+				(cases[i][j]).setForeground(Color.GREEN);
+				this.boutonFixe(i, j);
+			}	
+			
+			else
+			{
+				(cases[i][j]).setForeground(Color.BLACK);
+				(cases[i][j]).setFont(new java.awt.Font("Helvetica", java.awt.Font.PLAIN ,25));
+				this.boutonFixe(i, j);
+			}
 		}
 	}
 	
-	boolean jouerTour(int x , int y , char lettres)
-    {
-    	Position pos = new Position();
-    	pos.ligne=x-1;
-    	pos.colonne=y-1;
-    	if ( !(this.estDansLigne(lettres, x-1)) && !(this.estDansColonne(lettres, y-1)) && !(this.estDansRegion(lettres, pos)) && (this.utilisable.contains(Character.toString(lettres))) )
-    	{
-    		this.grille[x-1][y-1]=Character.toString(lettres).toUpperCase().toCharArray()[0];
-    		this.tourJoues.add(pos);
-    		return true;
-    	}
-    	else if (this.estDansLigne(lettres, x-1))
-    		System.out.println("Verifier ligne");
-    	else if (this.estDansColonne(lettres, y-1))
-    		System.out.println("Verifier colonne");
-    	else if (this.estDansRegion(lettres, pos) )
-    		System.out.println("Verifier region");
-    	else if (!(this.utilisable.contains(Character.toString(lettres))))
-    		System.out.println("Vous ne pouvez pas utiliser "+lettres);
-    	return false ;
-    }
-	
-	
-	public void enleverValeur(int x , int y)
-    {
-    	Position pos=new Position();
-    	pos.ligne=x-1;
-    	pos.colonne=y-1;
-    	boolean trouve=false;
-    	for(Position posEnregistre : tourJoues)
-    	{	  
-    		if( (posEnregistre.ligne==pos.ligne) && ((posEnregistre.colonne==pos.colonne)) )
-    	    	{
-    				this.grille[x-1][y-1]='0';
-    				trouve=true;
-    				System.out.println("Found ! ");
-    			}
-
-    	}
-    	if (!trouve)
-    		System.out.println("Vous pouvez pas changer cette case ");
-    	
-    }
-	
-	boolean aideTour()
-    {
-    	for(int i=0;i<10;i++)
-    		for(int j=0;j<10;j++)
-    		{
-    			if (grille[i][j]==0)
-    			{
-    				for(int k =1;k<10;k++)
-    				{
-    					if(jouerTour(i+1,j+1,this.utilisable.charAt(k)))
-    						{	
-    							System.out.println("Joué ligne "+i+" colonne "+j+" la valeur "+this.utilisable.charAt(k));
-    							return true;	
-    						}
-    				}
-    				
-    			}
-    		}
-    	System.out.println("Pas de possibilites , veuillez enlever une valeur pour debloquer le jeu");
-    	return false;
-    }
-	
-	
-	public String getUtilisable()
+	// Colore la colonne si elle contient tous les chiffres de 1 a 9 
+	public void coloreColonne(int j)
 	{
-		return this.utilisable;
+		for(int i=0;i<9;i++)
+		{
+			if(cases[i][j].getForeground()==Color.BLUE)
+			{
+				(cases[i][j]).setForeground(Color.RED);
+				this.boutonFixe(i, j);
+			}	
+			
+			else
+			{
+				(cases[i][j]).setForeground(Color.GREEN);
+				(cases[i][j]).setFont(new java.awt.Font("Helvetica", java.awt.Font.PLAIN ,25));
+				this.boutonFixe(i, j);
+			}
+		}
+	}
+	
+	// Decolore la colonne si elle ne contient plus les chiffres de 1 a 9
+	public void decoloreColonne(int j)
+	{
+		for(int i=0;i<9;i++)
+		{
+			if((cases[i][j].getForeground()==Color.RED) || (cases[i][j].getForeground()==Color.BLUE) )
+			{
+				(cases[i][j]).setForeground(Color.BLUE);
+				this.boutonFixe(i, j);
+			}	
+			
+			else
+			{
+				(cases[i][j]).setForeground(Color.BLACK);
+				(cases[i][j]).setFont(new java.awt.Font("Helvetica", java.awt.Font.PLAIN ,25));
+				this.boutonFixe(i, j);
+			}
+		}
+	}
+
+	// Incremente le chiffre du bouton quand on appuie dessus
+	public void appuieBouton(int i,int j)
+	{
+		if(!jeu.getCaseFixe(i, j))
+		{
+			if(jeu.caracteresAutorises.indexOf(jeu.position(jeu.getCaseChar(i,j)))<9)
+				// A faire  
+				jeu.setCaseChar(i, j,jeu.caracteresAutorises(jeu.getCaseChar(i, j)));
+			else
+				jeu.setCaseChar(i, j,jeu.caracteresAutorises.get(0) );
+			
+			char in = (jeu.getCaseChar(i,j));
+			
+			if (in == '0')
+				(cases[i][j]).setText("");
+			else (cases[i][j]).setText(Character.toString(in));
+		}
 	}
 	
 	
-
+	// Ouvrir un fichier enregistre sur l'ordi
+	public void ouvrirFichier()
+	{
+		String nomFic = new String("");
+		JFileChooser choix = new JFileChooser();
+		choix.setDialogTitle("Choisir le fichier");
+		choix.setApproveButtonText("Valider");
+		
+		int returnVal=choix.showOpenDialog(this);
+		
+		if(returnVal == JFileChooser.APPROVE_OPTION)
+		{
+			File fichier = choix.getSelectedFile();
+			JeuLettres jeuTmp = new JeuLettres(fichier);
+			jeu = jeuTmp;
+			
+			for(int i=0;i<9;i++)
+			{
+				for(int j=0;j<9;j++)
+				{
+					char in = ((jeu.getCaseChar(i, j)));
+					if (in=='0')
+						(cases[i][j]).setText("");
+					else
+						(cases[i][j]).setText(Character.toString(in));
+					
+					this.boutonFixe(i, j);
+				}
+			}
+			
+			fichierCourant=choix.getSelectedFile();
+		}
+		
+	}
+	
+	/**public void resoudre()
+	{
+		if(jeu.resoudre(0, 0))
+		{
+			for(int i=0;i<9;i++)
+			{
+				for(int j=0;j<9;j++)
+				{
+					Integer in=new Integer(jeu.getCaseNum(i, j));
+					cases[i][j].setText(in.toString());
+					this.boutonFixe(i, j);
+					
+				}
+			}
+			
+		}
+		else {
+			JOptionPane.showMessageDialog(this, "Impossible de resoudre cette grille avec ce solveur simple ", "Message d'erreur", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	**/
+	
+	// definitions des sources
+	
+	
+	public void actionPerformed(ActionEvent e)
+	{
+		for(int i=0;i<9;i++)
+			for(int j=0;j<9;j++)
+			{
+				if (e.getSource()==cases[i][j])
+				{
+					this.appuieBouton(i, j);
+					this.verif(i, j);
+					
+				}
+			}
+		
+		// On définit les actions des sous menu
+		if(e.getSource()==ouvrir)
+			this.ouvrirFichier();
+		
+	}
+		
 }
+	
