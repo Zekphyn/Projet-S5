@@ -2,6 +2,7 @@ package projet;
 
 
 import pendu.PenduPanel;
+import sudoku.Grille;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -53,6 +54,8 @@ public class Jeu extends Menu implements ActionListener {
 	
 	public void lancerSudoku() {
 		System.out.println("doit lancer sudoku");
+		fenetre.setContentPane(new Grille());
+		fenetre.revalidate();
 	}
 	
 	public void lancerClassement() {
