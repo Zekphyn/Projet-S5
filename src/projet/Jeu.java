@@ -6,6 +6,7 @@ import pendu.PenduPanel;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.*;
 
@@ -16,7 +17,7 @@ public class Jeu extends Menu implements ActionListener {
 	public static void main(String[] args){
 		new Jeu("Jeu");
 	}
-	JFrame fenetre;
+	public JFrame fenetre;
 	
 	public Jeu() {
 		
@@ -33,9 +34,10 @@ public class Jeu extends Menu implements ActionListener {
 		fenetre.setVisible(true);
 	}
 	
-	public void lancerPendu() {
+	public void lancerPendu() throws IOException {
 		System.out.println("doit lancer le pendu ");
-		fenetre.setContentPane(new PenduPanel(fenetre.getWidth(),fenetre.getHeight()));
+		PenduPanel pendu = new PenduPanel(fenetre.getWidth(),fenetre.getHeight());
+		fenetre.setContentPane(pendu);
 		fenetre.revalidate();
 	}
 	
@@ -65,7 +67,12 @@ public class Jeu extends Menu implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Pendu")) {
-			lancerPendu();
+			try {
+				lancerPendu();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} else if (e.getActionCommand().equals("Motus")) {
 			lancerMotus();
 		} else if (e.getActionCommand().equals("Mots Meles")) {

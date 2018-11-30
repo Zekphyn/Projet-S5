@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -25,6 +26,7 @@ import javax.swing.SwingUtilities;
 import projet.Classement;
 import projet.Jeu;
 import projet.Joueur;
+import projet.Menu;
 
 
 
@@ -40,20 +42,22 @@ public class PenduPanel extends JPanel implements ActionListener{
 	private JLabel mot, erreur;
 	private ImageLabel image;
 	int width ,height;
-	Pendu pendu;
+
+
+	Mot word;
 	
 	
-	public PenduPanel(int width, int height) {
+	public PenduPanel(int width, int height) throws IOException {
 		joueur = new Joueur("Pendu","",0);
-		pendu = new Pendu();
+		word = new Mot();
 		this.width = width;
 		this.height = height;
 		init(width,height);
 	}
 	
-	public PenduPanel(Joueur j,int width,int height) {
+	public PenduPanel(Joueur j,int width,int height) throws IOException {
 		joueur = j;
-		pendu = new Pendu();
+		word = new Mot();
 		init(width,height);
 	}
 	
@@ -64,7 +68,7 @@ public class PenduPanel extends JPanel implements ActionListener{
 			joueur.setNom(nom);
 			if(nom == null) joueur.setNom("joueur");
 		}
-		this.setSize(width,height);
+		setSize(width,height);
 		Dimension dim = new Dimension(width,height/5);
 		//this.setPreferredSize();
 		
@@ -91,7 +95,7 @@ public class PenduPanel extends JPanel implements ActionListener{
 		
 		JPanel motSecret =new JPanel(new BorderLayout());
 		motSecret.setBackground(Color.yellow);
-		mot =  new JLabel(pendu.mot.getMotSecret());
+		mot =  new JLabel(word.getMotSecret());
 		mot.setFont(new Font("Comics Sans MS", Font.BOLD, 50));
 		mot.setHorizontalAlignment(JLabel.CENTER);
 		motSecret.setPreferredSize(new Dimension(width/7,height/7));
@@ -117,7 +121,7 @@ public class PenduPanel extends JPanel implements ActionListener{
 		JPanel err = new JPanel(new BorderLayout());
 		err.setPreferredSize(new Dimension(width/7,height/6));
 		err.setBackground(Color.yellow);
-		erreur = new JLabel("Vous avez le droit à "+(5 -pendu.mot.getNombreErreur())+" erreurs.");
+		erreur = new JLabel("Vous avez le droit à "+(5 -word.getNombreErreur())+" erreurs.");
 		erreur.setFont(new Font("Arial",Font.BOLD, 20));
 		erreur.setHorizontalAlignment(JLabel.CENTER);
 		err.add(erreur,BorderLayout.CENTER);
@@ -147,31 +151,38 @@ public class PenduPanel extends JPanel implements ActionListener{
 		regles2.setHorizontalAlignment(JLabel.CENTER);
 		bottom.add(regles2, BorderLayout.CENTER);
 		
-		this.setLayout(new BorderLayout());
-		this.setBackground(Color.BLUE);
+		setLayout(new BorderLayout());
+		setBackground(Color.BLUE);
 		
-		this.add(head, BorderLayout.NORTH);
-		this.add(left, BorderLayout.WEST);
-		this.add(right, BorderLayout.EAST);
-		this.add(bottom, BorderLayout.SOUTH);
-		this.setVisible(true);
+		add(head, BorderLayout.NORTH);
+		add(left, BorderLayout.WEST);
+		add(right, BorderLayout.EAST);
+		add(bottom, BorderLayout.SOUTH);
+		setVisible(true);
 	}
 	
 
 	class BoutonListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){	
 			((JButton)e.getSource()).setEnabled(false);
-			erreur.setText("Vous avez le droit à "+(5 - pendu.mot.getNombreErreur())+" erreurs.");
+			erreur.setText("Vous avez le droit à "+(5 - word.getNombreErreur())+" erreurs.");
 			//Custom button text
 			Object[] options = {"Rejouer", "Menu","Quitter"};
-            
+			
+			
+			word.verifierMot(((JButton)e.getSource()).getText().charAt(0));
+			mot.setText(word.getMotSecret());
+			image.setImagePath("src/images/pendu"+(1+word.getNombreErreur())+".jpg");
 			                   
-			if(pendu.mot.estFini()) {
-				int option = JOptionPane.showOptionDialog(null,"Vous avez trouvé le mot " + pendu.mot.getMot() +
+			
+			
+			
+			if(word.estFini()) {
+				int option = JOptionPane.showOptionDialog(null,"Vous avez trouvé le mot " + word.getMot() +
                         " en " +
-                        pendu.mot.getNombreCoup() + " coup" + ((pendu.mot.getNombreCoup() > 1) ? "s" : "") +
-						", avec " + pendu.mot.getNombreErreur() +
-                        " erreur" + ((pendu.mot.getNombreErreur() > 1) ? "s" : "") + ".\n",
+                        word.getNombreCoup() + " coup" + ((word.getNombreCoup() > 1) ? "s" : "") +
+						", avec " + word.getNombreErreur() +
+                        " erreur" + ((word.getNombreErreur() > 1) ? "s" : "") + ".\n",
 					    "Bravo", JOptionPane.YES_NO_CANCEL_OPTION,
 					    JOptionPane.QUESTION_MESSAGE,
 					    null,
@@ -181,14 +192,19 @@ public class PenduPanel extends JPanel implements ActionListener{
 				if(option == JOptionPane.OK_OPTION) {
 					//Classement.setScore(joueur);
 					removeAll();
-					add(new PenduPanel(joueur,width,height));
+						try {
+							add(new PenduPanel(joueur,width,height));
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+
 					revalidate();
 					repaint();
 					
 				}else if(option == JOptionPane.NO_OPTION) {
-					removeAll();
-					new Jeu("jeu");
 					revalidate();
+					new Jeu("Jeu");
 					repaint();
 				}else if(option == JOptionPane.CANCEL_OPTION){
 					System.exit(0);
@@ -198,8 +214,8 @@ public class PenduPanel extends JPanel implements ActionListener{
 				
 				
 				
-			}else if(pendu.mot.getNombreErreur()== 5) {
-				int option = JOptionPane.showOptionDialog(null,"Dommage, vous avez perdu le mot était "+pendu.mot.getMot()+".\n",
+			}else if(word.getNombreErreur()== 5) {
+				int option = JOptionPane.showOptionDialog(null,"Dommage, vous avez perdu le mot était "+word.getMot()+".\n",
 					    "Vous avez perdu", JOptionPane.YES_NO_CANCEL_OPTION,
 					    JOptionPane.QUESTION_MESSAGE,
 					    null,
@@ -207,24 +223,23 @@ public class PenduPanel extends JPanel implements ActionListener{
 					    options[2]);
 				
 				if(option == JOptionPane.OK_OPTION) {
-					removeAll();
-					add(new PenduPanel(joueur,width,height));
+					try {
+						add(new PenduPanel(joueur,width,height));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					revalidate();
 					repaint();
-					
+
 					
 				}else if(option == JOptionPane.NO_OPTION) {
-					  removeAll();
-					  revalidate();
+					new Jeu("Jeu");
+
 				}else if(option == JOptionPane.CANCEL_OPTION){
 					System.exit(0);
 				}
 
-			}else {
-				pendu.mot.verifierMot(((JButton)e.getSource()).getText().charAt(0));
-				mot.setText(pendu.mot.getMotSecret());
-				image.setImagePath("src/images/pendu"+(1+pendu.mot.getNombreErreur())+".jpg");
-				
 			}
 			
 		}		
@@ -235,9 +250,7 @@ public class PenduPanel extends JPanel implements ActionListener{
 		// TODO Auto-generated method stub
 
 		
-		
 	}
-	
 
 
 

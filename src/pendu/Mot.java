@@ -8,55 +8,35 @@ import java.io.LineNumberReader;
 
 import javax.swing.JOptionPane;
 
+import projet.Dictionnaire;
+
 public class Mot {
 
+	Dictionnaire  d;
 	private String mot = "", motSecret = "";
 	private char[] tabChar;
 	private int erreur = 0;
 	private int nbreCoup = 0;
 
-	public Mot(){
+	public Mot() throws IOException{
+		d = new Dictionnaire();
 		initMot();
 	}
 	
 	public void initMot(){
-		
-		int i = (int)(Math.random() * 100000);
-		while(i > 369086){
-			 i /= 2;
+		int i = (int)(Math.random() * 15);
+
+		while(this.mot == "") {
+			this.mot = d.motAlea(i);
+			i = (int)(Math.random() * 15);
+
 		}
-		
-		try {
-			LineNumberReader fnr = new LineNumberReader(new FileReader(new File("src/file/dico.txt")));
-			int carac;
-			this.mot = "";
-			this.motSecret= "";
-			while((carac = fnr.read()) != -1){
-				if(fnr.getLineNumber() == (i+1))
-					break;
-				
-				else{
-					if(fnr.getLineNumber() == i){
-						this.mot += (char)carac;						
-					}
-				}
-			}
-			
-			this.mot = this.mot.trim().toUpperCase();
-			
-			for(int j = 0; j < this.mot.length(); j++)
-			{
-				this.motSecret += (this.mot.charAt(j) != '\'' && this.mot.charAt(j) != '-') ? "*" : this.mot.charAt(j);
-			}
-			
-			fnr.close();
-			this.nbreCoup = 0;
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "Erreur de chargement depuis le fichier de mots !", "ERREUR", JOptionPane.ERROR_MESSAGE);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Erreur de chargement depuis le fichier de mots !", "ERREUR", JOptionPane.ERROR_MESSAGE);
+
+		System.out.println(this.mot);
+		for(int j = 0; j < this.mot.length(); j++)
+		{
+			this.motSecret += (this.mot.charAt(j) != '\'' && this.mot.charAt(j) != '-') ? "*" : this.mot.charAt(j);
 		}
-		
 		this.tabChar = this.motSecret.toCharArray();
 		this.erreur = 0;
 	}
