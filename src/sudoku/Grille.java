@@ -29,7 +29,7 @@ public class Grille extends JFrame implements ActionListener {
 	// Fichier courant
 	File fichierCourant;
 	Container c;
-	JPanel panel  , panelGeneral,penlHaut;
+	JPanel panel  , panelGeneral;
 	JPanel[][] jp = new JPanel[3][3];
 	
 	// Boutons représentants les cases 
@@ -164,7 +164,7 @@ public class Grille extends JFrame implements ActionListener {
 	{
 		// On verifie si la region de la case ,sur laquelle on a cliqué , est valide , si oui on la colorie
 		if (jeu.getRegionDeCase(i, j).regionComplete())
-			(jp[(int)(i/3)][(int)(j/3)]).setBorder(BorderFactory.createLineBorder(Color.GREEN));
+			(jp[(int)(i/3)][(int)(j/3)]).setBorder(BorderFactory.createLineBorder(Color.RED));
 		else
 			(jp[(int)(i/3)][(int)(j/3)]).setBorder(BorderFactory.createEtchedBorder());
 		
@@ -176,9 +176,9 @@ public class Grille extends JFrame implements ActionListener {
 	{
 		for(int j=0;j<9;j++)
 		{
-			if(cases[i][j].getForeground()==Color.RED)
+			if(cases[i][j].getForeground()==Color.GREEN)
 			{
-				(cases[i][j]).setForeground(Color.GREEN);
+				(cases[i][j]).setForeground(Color.RED);
 				this.boutonFixe(i, j);
 			}	
 			
@@ -198,15 +198,15 @@ public class Grille extends JFrame implements ActionListener {
 	{
 		for(int j=0;j<9;j++)
 		{
-			if(cases[i][j].getForeground()==Color.GREEN)
+			if( (cases[i][j].getForeground()==Color.RED) || ( cases[i][j].getForeground()== Color.GREEN ))
 			{
-				(cases[i][j]).setForeground(Color.RED);
+				(cases[i][j]).setForeground(Color.GREEN);
 				this.boutonFixe(i, j);
 			}	
 			
 			else
 			{
-				(cases[i][j]).setForeground(Color.black);
+				(cases[i][j]).setForeground(Color.BLACK);
 				(cases[i][j]).setFont(new java.awt.Font("Helvetica", java.awt.Font.PLAIN ,25));
 				this.boutonFixe(i, j);
 			}
@@ -218,15 +218,15 @@ public class Grille extends JFrame implements ActionListener {
 	{
 		for(int i=0;i<9;i++)
 		{
-			if(cases[i][j].getForeground()==Color.blue)
+			if(cases[i][j].getForeground()==Color.BLUE)
 			{
-				(cases[i][j]).setForeground(Color.GREEN);
+				(cases[i][j]).setForeground(Color.RED);
 				this.boutonFixe(i, j);
 			}	
 			
 			else
 			{
-				(cases[i][j]).setForeground(Color.RED);
+				(cases[i][j]).setForeground(Color.GREEN);
 				(cases[i][j]).setFont(new java.awt.Font("Helvetica", java.awt.Font.PLAIN ,25));
 				this.boutonFixe(i, j);
 			}
@@ -238,15 +238,15 @@ public class Grille extends JFrame implements ActionListener {
 	{
 		for(int i=0;i<9;i++)
 		{
-			if((cases[i][j].getForeground()==Color.GREEN) || (cases[i][j].getForeground()==Color.blue) )
+			if((cases[i][j].getForeground()==Color.RED) || (cases[i][j].getForeground()==Color.BLUE) )
 			{
-				(cases[i][j]).setForeground(Color.blue);
+				(cases[i][j]).setForeground(Color.BLUE);
 				this.boutonFixe(i, j);
 			}	
 			
 			else
 			{
-				(cases[i][j]).setForeground(Color.black);
+				(cases[i][j]).setForeground(Color.BLACK);
 				(cases[i][j]).setFont(new java.awt.Font("Helvetica", java.awt.Font.PLAIN ,25));
 				this.boutonFixe(i, j);
 			}
@@ -266,7 +266,8 @@ public class Grille extends JFrame implements ActionListener {
 			Integer in = new Integer(jeu.getCaseNum(i,j));
 			
 			if (in == 0)
-				(cases[i][j]).setText(in.toString());
+				(cases[i][j]).setText("");
+			else (cases[i][j]).setText(in.toString());
 		}
 	}
 	
@@ -306,6 +307,27 @@ public class Grille extends JFrame implements ActionListener {
 		
 	}
 	
+	public void resoudre()
+	{
+		if(jeu.resoudre(0, 0))
+		{
+			for(int i=0;i<9;i++)
+			{
+				for(int j=0;j<9;j++)
+				{
+					Integer in=new Integer(jeu.getCaseNum(i, j));
+					cases[i][j].setText(in.toString());
+					this.boutonFixe(i, j);
+					
+				}
+			}
+			
+		}
+		else {
+			JOptionPane.showMessageDialog(this, "Impossible de resoudre cette grille avec ce solveur simple ", "Message d'erreur", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
 	// definitions des sources
 	
 	
@@ -325,6 +347,8 @@ public class Grille extends JFrame implements ActionListener {
 		// On définit les actions des sous menu
 		if(e.getSource()==ouvrir)
 			this.ouvrirFichier();
+		if(e.getSource()==resoudre)
+			this.resoudre();
 	}
 		
 }
