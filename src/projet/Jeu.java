@@ -17,7 +17,7 @@ public class Jeu extends Menu implements ActionListener {
 	public static void main(String[] args){
 		new Jeu("Jeu");
 	}
-	public JFrame fenetre;
+	public static JFrame fenetre;
 	
 	public Jeu() {
 		

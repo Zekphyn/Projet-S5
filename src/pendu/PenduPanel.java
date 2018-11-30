@@ -66,7 +66,7 @@ public class PenduPanel extends JPanel implements ActionListener{
 		if(joueur.getNom() == "") {
 			String nom = JOptionPane.showInputDialog(null, "Bonjour ! Quelle est votre Pseudo ?");
 			joueur.setNom(nom);
-			if(nom == null) joueur.setNom("joueur");
+			if(nom.equals("")) joueur.setNom("joueur");
 		}
 		setSize(width,height);
 		Dimension dim = new Dimension(width,height/5);
@@ -178,6 +178,8 @@ public class PenduPanel extends JPanel implements ActionListener{
 			
 			
 			if(word.estFini()) {
+				Classement classement = new Classement();
+				classement.setScoreCSV(joueur);
 				int option = JOptionPane.showOptionDialog(null,"Vous avez trouvé le mot " + word.getMot() +
                         " en " +
                         word.getNombreCoup() + " coup" + ((word.getNombreCoup() > 1) ? "s" : "") +
@@ -204,6 +206,7 @@ public class PenduPanel extends JPanel implements ActionListener{
 					
 				}else if(option == JOptionPane.NO_OPTION) {
 					revalidate();
+					Jeu.fenetre.dispose();
 					new Jeu("Jeu");
 					repaint();
 				}else if(option == JOptionPane.CANCEL_OPTION){
@@ -234,6 +237,7 @@ public class PenduPanel extends JPanel implements ActionListener{
 
 					
 				}else if(option == JOptionPane.NO_OPTION) {
+					Jeu.fenetre.dispose();
 					new Jeu("Jeu");
 
 				}else if(option == JOptionPane.CANCEL_OPTION){
