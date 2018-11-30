@@ -20,15 +20,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.MenuBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-public class Grille extends JFrame implements ActionListener {
+public class Grille implements ActionListener {
 	Jeu jeu;
 	
 	// Fichier courant
 	File fichierCourant;
-	Container c;
+
 	JPanel panel  , panelGeneral;
 	JPanel[][] jp = new JPanel[3][3];
 	
@@ -42,17 +43,8 @@ public class Grille extends JFrame implements ActionListener {
 	// Constructeur par defaut qui cree la grille et la fenetre en placant tous les elements et l'affiche
 	public Grille()
 	{
-		// On cree la fenetre
-		super("Sudoku");
-		
 		// On cree le jeu
 		jeu=new Jeu();
-		
-		// On definit la fin du programme a la fermeture de la fenetre
-		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		
-		// La taille de la fenetre
-		setSize(650,650);
 		
 		// On ajoute la barre des menus
 		menu = new JMenuBar();
@@ -76,10 +68,8 @@ public class Grille extends JFrame implements ActionListener {
 		ouvrir.addActionListener(this);
 		fermer.addActionListener(this);
 		resoudre.addActionListener(this);
-		setJMenuBar(menu);
 		
 		// On cree un conteneur et un panel avec une GridLayout puis on ajoute les boutons
-		c = getContentPane();
 		grille= new GridLayout(3,3);
 		panel= new JPanel();
 		panel.setLayout(grille);
@@ -125,11 +115,6 @@ public class Grille extends JFrame implements ActionListener {
 				
 			}
 		}
-		c.add(panelGeneral);
-		
-		// on affiche la fenetre 
-		show();
-		
 	}
 	
 	
@@ -155,7 +140,7 @@ public class Grille extends JFrame implements ActionListener {
 		else decoloreColonne(j);
 		
 		if(jeu.gagne())
-			JOptionPane.showMessageDialog(this, " Vous avez gagné , quel champion !", "Félicitations", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null, " Vous avez gagné , quel champion !", "Félicitations", JOptionPane.PLAIN_MESSAGE);
 	}
 	
 	
@@ -280,7 +265,7 @@ public class Grille extends JFrame implements ActionListener {
 		choix.setDialogTitle("Choisir le fichier");
 		choix.setApproveButtonText("Valider");
 		
-		int returnVal=choix.showOpenDialog(this);
+		int returnVal=choix.showOpenDialog(null);
 		
 		if(returnVal == JFileChooser.APPROVE_OPTION)
 		{
@@ -324,7 +309,7 @@ public class Grille extends JFrame implements ActionListener {
 			
 		}
 		else {
-			JOptionPane.showMessageDialog(this, "Impossible de resoudre cette grille avec ce solveur simple ", "Message d'erreur", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Impossible de resoudre cette grille avec ce solveur simple ", "Message d'erreur", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -349,6 +334,14 @@ public class Grille extends JFrame implements ActionListener {
 			this.ouvrirFichier();
 		if(e.getSource()==resoudre)
 			this.resoudre();
+	}
+	
+	public JPanel getPanel() {
+		return this.panelGeneral;
+	}
+	
+	public JMenuBar getMenuSudoku() {
+		return menu;
 	}
 		
 }

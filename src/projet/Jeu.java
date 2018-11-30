@@ -54,7 +54,9 @@ public class Jeu extends Menu implements ActionListener {
 	
 	public void lancerSudoku() {
 		System.out.println("doit lancer sudoku");
-		fenetre.setContentPane(new Grille());
+		Grille sudoku = new Grille();
+		fenetre.setContentPane(sudoku.getPanel());
+		fenetre.setJMenuBar(sudoku.getMenuSudoku());
 		fenetre.revalidate();
 	}
 	
