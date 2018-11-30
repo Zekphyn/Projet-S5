@@ -1,7 +1,7 @@
 package projet;
 
 
-import penduConsole.PenduPanel;
+import pendu.PenduPanel;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -35,7 +35,7 @@ public class Jeu extends Menu implements ActionListener {
 	
 	public void lancerPendu() {
 		System.out.println("doit lancer le pendu ");
-		fenetre.setContentPane(new PenduPanel());
+		fenetre.setContentPane(new PenduPanel(fenetre.getWidth(),fenetre.getHeight()));
 		fenetre.revalidate();
 	}
 	

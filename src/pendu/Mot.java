@@ -1,4 +1,4 @@
-package penduConsole;
+package pendu;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,7 +27,7 @@ public class Mot {
 		}
 		
 		try {
-			LineNumberReader fnr = new LineNumberReader(new FileReader(new File("src/penduConsole/dico.txt")));
+			LineNumberReader fnr = new LineNumberReader(new FileReader(new File("src/file/dico.txt")));
 			int carac;
 			this.mot = "";
 			this.motSecret= "";
@@ -52,7 +52,7 @@ public class Mot {
 			fnr.close();
 			this.nbreCoup = 0;
 		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, " Erreur de chargement depuis le fichier de mots !", "ERREUR", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Erreur de chargement depuis le fichier de mots !", "ERREUR", JOptionPane.ERROR_MESSAGE);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Erreur de chargement depuis le fichier de mots !", "ERREUR", JOptionPane.ERROR_MESSAGE);
 		}
@@ -75,7 +75,6 @@ public class Mot {
 		++this.nbreCoup;
 		this.motSecret = new String(this.tabChar);
 		System.out.println("Mot secret = " + this.mot);
-		System.out.println("Mot secret = " + this.motSecret);
 		if(bok == false) this.erreur++;
 		return (bok == true) ? 1 : -1;
 	}
