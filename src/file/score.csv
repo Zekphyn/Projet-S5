@@ -1,26 +1,26 @@
-nom,jeu,score
-Alfred,Pendu,500
-Julien,Pendu,800
-Julien,Pendu,300
-,Pendu,0
-Alfred,Pendu,5000
-Paul,Motus,800
-Paul,Motus,800
-Paul,Motus,800
-Paul,Motus,800
-Paul,Motus,800
-Paul,Sudoku chiffre,800
-Paul,Sudoku chiffre,800
-Paul,Sudoku chiffre,800
-Paul,Sudoku chiffre,800
-Paul,Sudoku chiffre,800
-Paul,Sudoku lettre,800
-Paul,Sudoku lettre,800
-Paul,Sudoku lettre,800
-Paul,Sudoku lettre,800
-Paul,Sudoku lettre,800
-,Mots meles,0
-,Mots meles,0
-,Mots meles,0
-,Mots meles,0
-,Mots meles,0
+JEU,NOM,SCORE
+Pendu,Julien,50
+Pendu,Julien,100
+Pendu,Julien,75
+Pendu,Julien,6000
+Pendu,Julien,6000
+Motus,Paul,800
+Motus,Paul,800
+Motus,Paul,800
+Motus,Paul,800
+Motus,Paul,800
+Sudoku chiffre,Paul,800
+Sudoku chiffre,Paul,800
+Sudoku chiffre,Paul,800
+Sudoku chiffre,Paul,800
+Sudoku chiffre,Paul,800
+Sudoku lettre,Paul,800
+Sudoku lettre,Paul,800
+Sudoku lettre,Paul,800
+Sudoku lettre,Paul,800
+Sudoku lettre,Paul,800
+Mots meles,,0
+Mots meles,,0
+mots meles,Julien,6000
+mots meles,Julien,6000
+mots meles,Julien,6000

@@ -1,20 +1,28 @@
 package projet;
 
+import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static java.nio.file.StandardOpenOption.APPEND;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 
 public class Classement {
@@ -46,10 +54,10 @@ public class Classement {
 	
 	// retourne l'objet Joueur qui a le plus gros score pour le jeu rentré en param
 	public static Joueur getHighScore(String jeu) {
-		String highscore = "0";
+		int highscore = 0;
 		Joueur joueurHighscore = new Joueur();
 		for( int i = 0 ; i < listeScore.size() ; i++) {
-			if(listeScore.get(i).getJeu().equalsIgnoreCase(jeu) && Integer.parseInt(listeScore.get(i).getScore()) > Integer.parseInt(highscore)) {
+			if(listeScore.get(i).getJeu().equalsIgnoreCase(jeu) && listeScore.get(i).getScore() > highscore) {
 				highscore = listeScore.get(i).getScore();
 				joueurHighscore = listeScore.get(i);
 			}
@@ -58,30 +66,46 @@ public class Classement {
 		return joueurHighscore;
 	}
 	
-	// Va remplacer le plus petit score si le score de joueur est plus élévé pour le jeu du joueur
+	// Va remplacer le plus petit score si le score de joueur est plus élévé dans son jeu
 	public static void setScore(Joueur joueur) {
 		int index = -1;
 		int scoreMin = 0;
+		int res = -1;
 		for( int i = 0 ; i < listeScore.size() ; i++) {
-			if(listeScore.get(i).getJeu().equalsIgnoreCase(joueur.getJeu())){
-				if( Integer.parseInt(joueur.getScore()) > scoreMin  && Integer.parseInt(listeScore.get(i).getScore()) <= scoreMin) {
-					scoreMin = Integer.parseInt(listeScore.get(i).getScore());
-					System.out.println(scoreMin);
+			if(listeScore.get(i).getJeu().equalsIgnoreCase(joueur.getJeu()) && joueur.getScore() >= scoreMin){
+				if(res == -1) {
+					scoreMin = listeScore.get(i).getScore();
+				}
+				res = listeScore.get(i).getScore();
+				System.out.println(index);
+				System.out.println("1 : " + res);
+				System.out.println("2 : " + scoreMin);
+				if(scoreMin >= res ) {
+					scoreMin = res;
+					System.out.println("ça indexe bien");
 					index = i;
 				}
 			}
 		}
 		if(index != -1) {
 			listeScore.set(index, joueur);
+			// Si il y a modification du score, on réécrit 
+			try (BufferedWriter writer = Files.newBufferedWriter(path,StandardCharsets.UTF_8)) {
+
+	            StatefulBeanToCsv<Joueur> beanToCsv = new StatefulBeanToCsvBuilder(writer).withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).build();        
+	            beanToCsv.write(listeScore);
+
+	        } catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException | IOException ex) {
+	        }
 		}
 	}
-	
+	/*
 	public static void main(String[] args) throws IOException{
 		new Classement();
 		System.out.println(listeScore);
-		Joueur joueur = new Joueur("mots meles","Julien","6000");
+		Joueur joueur = new Joueur("mots meles","Julien",6000);
 		setScore(joueur);
 		System.out.println(listeScore);
 		getHighScore("Mots meles");
-	}
+	}*/
 }
