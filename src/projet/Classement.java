@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 import com.opencsv.CSVReader;
@@ -86,6 +87,7 @@ public class Classement {
 	// Va remplacer le plus petit score si le score de joueur est plus élévé dans son jeu
 	public void setScoreCSV(Joueur joueur) {
 		int index = -1;
+		joueur.setScore(new Date());
 		for( int i = 0 ; i < listeScore.size() ; i++) {
 			if(listeScore.get(i).getJeu().equalsIgnoreCase(joueur.getJeu()) && joueur.getScore() >= listeScore.get(i).getScore()){
 				index = i;
