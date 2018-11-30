@@ -18,7 +18,7 @@ public class Grille extends JPanel{
 	public int longueur;
 	public int largeur;
 	private Color couleurLignes ;
-	public int largeurCaseGraphique;
+	//public int largeurCaseGraphique;
 	Motus motus;
 	//private Motus motus
 	
@@ -81,6 +81,7 @@ public class Grille extends JPanel{
 		int i;
 		int j;
 		setLayout(new GridLayout(longueur,largeur));
+		this.setPreferredSize(new Dimension(800,600));
 		for(i=  0 ; i<this.motus.getNbCoups(); i++) {	
 			for( j = 0; j< largeur;j++) {
 				ajouter(this.motus.getJeu()[i].charAt(j),i,j);

@@ -30,7 +30,7 @@ public class Jeu {
 				jeu[i][j]=new Region();
 		BufferedReader reader ;
 		try {
-			reader = new BufferedReader(new FileReader("C:/Users/N&R/git/Projet-S5/src/sudoku/g.txt"));
+			reader = new BufferedReader(new FileReader("src/sudoku/g.txt"));
 			
 			String line = reader.readLine();
 			int i=-1;

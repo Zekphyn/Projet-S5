@@ -10,6 +10,7 @@ public class Mot {
 		this.str=str;
 		str = str.toUpperCase();
 		normaliseMotMaj();
+		valable = verifLettres();
 	}
 	
 	/*public Mot(String str, int length){

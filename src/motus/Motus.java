@@ -207,6 +207,9 @@ public class Motus extends Jeu {
 				this.trouve[i]= true;
 	}
 	
+	public boolean perdu() {
+		return (nbCoups >= nbCoupsMax);
+	}
 	
 	public void jouerCoup(String motSaisi)
 	{

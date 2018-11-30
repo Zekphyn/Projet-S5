@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import motus.JPanelMotus;
+
 public class Jeu extends Menu implements ActionListener {
 	static Classement classement = new Classement();
 	public static void main(String[] args){
@@ -39,6 +41,8 @@ public class Jeu extends Menu implements ActionListener {
 	
 	public void lancerMotus() {
 		System.out.println("doit lancer le motus");
+		fenetre.setContentPane(new JPanelMotus());
+		fenetre.revalidate();
 	}
 	
 	public void lancerMotsMeles() {
