@@ -1,11 +1,14 @@
 package sudoku;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RegionLettres {
 	// Tableau de 3x3 Cases
 	public CaseLettres[][] region;
 	
 	// Tableau des caracteres autorisés
-	public char[] caracteresAutorises  ;
+	List<Character> caracteresAutorises = new ArrayList<Character>();
 	
 	
 	// Constructeur par defaut avec des cases vides :
@@ -74,24 +77,25 @@ public class RegionLettres {
 			for(int c=0;c<3;c++)
 			{
 				
-				if((region[l][c].getChar())==caracteresAutorises[0])
+				if((region[l][c].getChar())==caracteresAutorises.get(0))
 					un=true;
-				else if ((region[l][c].getChar())==caracteresAutorises[1])
+				else if ((region[l][c].getChar())==caracteresAutorises.get(1))
 					deux=true;
-				else if ((region[l][c].getChar())==caracteresAutorises[2])
+				else if ((region[l][c].getChar())==caracteresAutorises.get(2))
 					trois=true;
-				else if ((region[l][c].getChar())==caracteresAutorises[3])
+				else if ((region[l][c].getChar())==caracteresAutorises.get(3))
 					quatre=true;
-				else if ((region[l][c].getChar())==caracteresAutorises[4])
+				else if ((region[l][c].getChar())==caracteresAutorises.get(4))
 					cinq=true;
-				else if ((region[l][c].getChar())==caracteresAutorises[5])
+				else if ((region[l][c].getChar())==caracteresAutorises.get(5))
 					six=true;
-				else if ((region[l][c].getChar())==caracteresAutorises[6])
+				else if ((region[l][c].getChar())==caracteresAutorises.get(6))
 					sept=true;
-				else if ((region[l][c].getChar())==caracteresAutorises[7])
+				else if ((region[l][c].getChar())==caracteresAutorises.get(7))
 					huit=true;
-				else if ((region[l][c].getChar())==caracteresAutorises[8])
+				else if ((region[l][c].getChar())==caracteresAutorises.get(8))
 					neuf=true;
+				
 				
 			}
 		
@@ -128,9 +132,9 @@ public class RegionLettres {
 	}
 	
 	// Verifie si la valeur ajoutee a la region ne la rend pas invalide
-	public boolean regionValide(int i,int j,int val)
+	public boolean regionValide(int i,int j,char val)
 	{
-		if(val==0)
+		if(val=='0')
 			return false;
 		for(int l=0;l<3;l++)
 			for(int c=0;c<3;c++)

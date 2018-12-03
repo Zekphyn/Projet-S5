@@ -42,8 +42,8 @@ public class GrilleLettres extends JFrame implements ActionListener {
 	// Constructeur par defaut qui cree la grille et la fenetre en placant tous les elements et l'affiche
 	public GrilleLettres()
 	{
-		// On cree la fenetre
-		super("Sudoku");
+		// On cree la fenetre : Utilisé pendant les tests du jeu 
+		//super("Sudoku");
 		
 		// On cree le jeu
 		jeu=new JeuLettres();
@@ -127,8 +127,8 @@ public class GrilleLettres extends JFrame implements ActionListener {
 		}
 		c.add(panelGeneral);
 		
-		// on affiche la fenetre 
-		show();
+		// on affiche la fenetre : Utilisé pendant les tests unitaires
+		// show();
 		
 	}
 	
@@ -258,9 +258,8 @@ public class GrilleLettres extends JFrame implements ActionListener {
 	{
 		if(!jeu.getCaseFixe(i, j))
 		{
-			if(jeu.caracteresAutorises.indexOf(jeu.position(jeu.getCaseChar(i,j)))<9)
-				// A faire  
-				jeu.setCaseChar(i, j,jeu.caracteresAutorises(jeu.getCaseChar(i, j)));
+			if(jeu.caracteresAutorises.indexOf(jeu.getCaseChar(i,j))<8)
+				jeu.setCaseChar(i, j,jeu.caracteresAutorises.get(jeu.caracteresAutorises.indexOf(jeu.getCaseChar(i, j))+1));
 			else
 				jeu.setCaseChar(i, j,jeu.caracteresAutorises.get(0) );
 			
@@ -308,7 +307,7 @@ public class GrilleLettres extends JFrame implements ActionListener {
 		
 	}
 	
-	/**public void resoudre()
+	public void resoudre()
 	{
 		if(jeu.resoudre(0, 0))
 		{
@@ -316,7 +315,7 @@ public class GrilleLettres extends JFrame implements ActionListener {
 			{
 				for(int j=0;j<9;j++)
 				{
-					Integer in=new Integer(jeu.getCaseNum(i, j));
+					Character in=new Character (jeu.getCaseChar(i, j));
 					cases[i][j].setText(in.toString());
 					this.boutonFixe(i, j);
 					
@@ -328,7 +327,7 @@ public class GrilleLettres extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(this, "Impossible de resoudre cette grille avec ce solveur simple ", "Message d'erreur", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	**/
+	
 	
 	// definitions des sources
 	
@@ -349,8 +348,21 @@ public class GrilleLettres extends JFrame implements ActionListener {
 		// On définit les actions des sous menu
 		if(e.getSource()==ouvrir)
 			this.ouvrirFichier();
+		else if(e.getSource()==resoudre)
+			this.resoudre();
+		else if(e.getSource()==fermer)
+			System.exit(0);
 		
 	}
+	
+	public JPanel getPanel() {
+		return this.panelGeneral;
+	}
+	
+	public JMenuBar getMenuSudoku() {
+		return menu;
+	}
+		
 		
 }
 	

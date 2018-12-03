@@ -2,7 +2,7 @@ package projet;
 
 
 import pendu.PenduPanel;
-import sudoku.Grille;
+import sudoku.GrilleLettres;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -54,7 +54,7 @@ public class Jeu extends Menu implements ActionListener {
 	
 	public void lancerSudoku() {
 		System.out.println("doit lancer sudoku");
-		Grille sudoku = new Grille();
+		GrilleLettres sudoku = new GrilleLettres();
 		fenetre.setContentPane(sudoku.getPanel());
 		fenetre.setJMenuBar(sudoku.getMenuSudoku());
 		fenetre.revalidate();

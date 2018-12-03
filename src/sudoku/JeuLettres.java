@@ -50,16 +50,12 @@ public class JeuLettres {
 						char c = line.charAt(j);
 						int fixe = Integer.parseInt(Character.toString(line.charAt(j+1)));
 						this.setCaseChar(i, j/2, c);
-						System.out.println(c);
-						System.out.println(this.getCaseChar(i, j/2));
 						if (fixe==0)
 							b=false;
 						else b = true;
-						System.out.println(b);
 						this.setCaseFixe(i, j/2, b);
-						if(! existe(c))
+						if(! existe(c) && c!='0')
 							this.caracteresAutorises.add(c);
-						System.out.println(caracteresAutorises.size());
 					}
 					// Lire la ligne suivante
 					line = reader.readLine();
@@ -67,12 +63,15 @@ public class JeuLettres {
 						
 			}
 			reader.close();
-			
+			//Passage de la liste des possibilité de jeux
+			for (int l=0;l<3;l++)
+				for(int c=0;c<3;c++)
+					this.jeu[l][c].caracteresAutorises=this.caracteresAutorises;			
 						
 		}
 		
 		catch(Exception exc) {
-            System.err.println("Ouverture impossible : fichier inexistant ou mal complété.");
+            System.err.println("Oups.. fichier incompatible !");
         }	
 	                
 			
@@ -207,7 +206,7 @@ public class JeuLettres {
 		
 		public boolean ligneValide(int l,int c)
 		{
-			if(this.getCaseChar(l, c)==0)
+			if(this.getCaseChar(l, c)=='0')
 				return false;
 			
 			int j=0;
@@ -231,9 +230,9 @@ public class JeuLettres {
 		
 		// Verifie si la ligne est valide avec la nouvelle valeur à inserer
 		
-		public boolean ligneValide(int l ,int c, int val)
+		public boolean ligneValide(int l ,int c, char val)
 		{
-			if(val==0)
+			if(val=='0')
 				return false;
 			
 			for(int i=0;i<9;i++)
@@ -288,9 +287,9 @@ public class JeuLettres {
 		}
 		
 		// Verifie si la colonne est valide 
-		public boolean colonneValide(int l ,int c, int val)
+		public boolean colonneValide(int l ,int c, char val)
 		{
-			if(val==0)
+			if(val=='0')
 				return false;
 			
 			for(int i=0;i<9;i++)
@@ -305,7 +304,7 @@ public class JeuLettres {
 		
 		public boolean colonneValide(int l,int c)
 		{
-			if(this.getCaseChar(l, c)==0)
+			if(this.getCaseChar(l, c)=='0')
 				return false;
 			
 			int j=0;
@@ -342,7 +341,7 @@ public class JeuLettres {
 		}
 		
 		// Resoudre une grille
-		/**
+		
 		public boolean resoudre(int i,int j)
 		{
 			// quand on finit la ligne on passe a la suivante
@@ -358,23 +357,22 @@ public class JeuLettres {
 				return resoudre(i,j+1);
 			
 			// On regarde si on peut placer une valeur , si oui on passe a la suivante , sinon on recule
-			for (int val=1;val<10;++val)
+			for (int val=0;val<9;++val)
 			{
-				if ( (this.getRegionDeCase(i, j).regionValide(i, j, val)) && (this.ligneValide(i, j, val) && (this.colonneValide(i, j, val))))
+				if ( (this.getRegionDeCase(i, j).regionValide(i, j, this.caracteresAutorises.get(val))) && (this.ligneValide(i, j, caracteresAutorises.get(val)) && (this.colonneValide(i, j, this.caracteresAutorises.get(val)))))
 				{
-					this.setCaseChar(i, j, caracteresAutorises[val]);
+					this.setCaseChar(i, j, caracteresAutorises.get(val));
 					if(resoudre(i,j+1))
 						return true;
 				}
 			}
-			this.setCaseChar(i, j, 0);
-			System.out.println(this);
+			this.setCaseChar(i, j, '0');
 			return false;
 		}
 		
-		**/
 		
-		// Afficher une grille
+		
+		// Afficher une grille en console
 		
 		public String toString()
 		{
