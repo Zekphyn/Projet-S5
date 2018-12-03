@@ -16,6 +16,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import projet.Classement;
+import projet.Jeu;
+import projet.Joueur;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -23,9 +27,13 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 public class GrilleLettres extends JFrame implements ActionListener {
 	JeuLettres jeu;
-	
+	Joueur joueur = new Joueur("Sudoku chiffre","",0);
+	boolean isSudokuChiffre = true;
 	// Fichier courant
 	File fichierCourant;
 	Container c;
@@ -78,6 +86,20 @@ public class GrilleLettres extends JFrame implements ActionListener {
 		resoudre.addActionListener(this);
 		setJMenuBar(menu);
 		
+		if(joueur.getNom() == "") {
+			String nom = JOptionPane.showInputDialog(null, "Bonjour ! Quelle est votre Pseudo ?");
+			joueur.setNom(nom);
+			if(nom.equals("")) joueur.setNom("joueur");
+		}
+	
+		Object stringArray[] = { "Chiffre", "Lettre" };
+	    int choixSudoku = JOptionPane.showOptionDialog(null, "Quel type de sudoku", "Choisissez",
+	        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray,
+	        stringArray[0]);
+	    if (choixSudoku == JOptionPane.NO_OPTION) {
+	        isSudokuChiffre = false;
+	      }
+
 		// On cree un conteneur et un panel avec une GridLayout puis on ajoute les boutons
 		c = getContentPane();
 		grille= new GridLayout(3,3);
@@ -126,13 +148,33 @@ public class GrilleLettres extends JFrame implements ActionListener {
 			}
 		}
 		c.add(panelGeneral);
-		
 		// on affiche la fenetre : Utilisé pendant les tests unitaires
 		// show();
-		
+		setGrilleDefault();
 	}
 	
-	
+	public void setGrilleDefault() {
+		if(isSudokuChiffre) {
+			this.fichierCourant = new File(""+Paths.get("src/sudoku/g.txt"));
+		}else {
+			this.fichierCourant = new File(""+Paths.get("src/sudoku/gl.txt"));
+		}
+		JeuLettres jeuTmp = new JeuLettres(fichierCourant);
+		jeu = jeuTmp;
+		for(int i=0;i<9;i++)
+		{
+			for(int j=0;j<9;j++)
+			{
+				char in = ((jeu.getCaseChar(i, j)));
+				if (in=='0')
+					(cases[i][j]).setText("");
+				else
+					(cases[i][j]).setText(Character.toString(in));
+				
+				this.boutonFixe(i, j);
+			}
+		}
+	}
 	// Afficher les cases fixe en gras
 	public void boutonFixe(int i , int j)
 	{
@@ -154,8 +196,13 @@ public class GrilleLettres extends JFrame implements ActionListener {
 			coloreColonne(j);
 		else decoloreColonne(j);
 		
-		if(jeu.gagne())
-			JOptionPane.showMessageDialog(this, " Vous avez gagné , quel champion !", "Félicitations", JOptionPane.PLAIN_MESSAGE);
+		if(jeu.gagne()) {
+			Classement classement = new Classement();
+			classement.setScoreCSV(joueur);
+			JOptionPane.showMessageDialog(this, " Vous avez gagné , quel champion ! Votre score : " + joueur.getScore(), "Félicitations", JOptionPane.PLAIN_MESSAGE);
+			Jeu.fenetre.dispose();
+			new Jeu("Jeu");
+		}
 	}
 	
 	
@@ -301,7 +348,6 @@ public class GrilleLettres extends JFrame implements ActionListener {
 					this.boutonFixe(i, j);
 				}
 			}
-			
 			fichierCourant=choix.getSelectedFile();
 		}
 		
