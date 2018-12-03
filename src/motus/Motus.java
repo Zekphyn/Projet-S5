@@ -12,7 +12,7 @@ import projet.Joueur;
 public class Motus extends Jeu {
 	private Dictionnaire dico;
 	private String motRech;
-	private Joueur joueur;
+	Joueur joueur;
 	private boolean[] trouve;
 	private String[] jeu;
 	private int[][] tabVerif;
@@ -69,7 +69,10 @@ public class Motus extends Jeu {
 	public int getNbCoupsMax() {
 		return nbCoupsMax;
 	}
-
+	
+	public void setJoueur(Joueur joueur) {
+		this.joueur=joueur;
+	}
 
 	public Motus() throws IOException
 	{
@@ -93,6 +96,7 @@ public class Motus extends Jeu {
 			trouve[i]=false;
 		this.tabVerif = new int[nbCoupsMax][tailleMot];
 		this.gagne = false;
+		this.joueur= new Joueur("motus","",0);
 	}
 	
 	/*private void affichage1() {

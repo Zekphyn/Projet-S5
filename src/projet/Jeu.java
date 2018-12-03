@@ -44,7 +44,8 @@ public class Jeu extends Menu implements ActionListener {
 	
 	public void lancerMotus() {
 		System.out.println("doit lancer le motus");
-		fenetre.setContentPane(new JPanelMotus());
+		JPanelMotus motus = new JPanelMotus(fenetre.getWidth(),fenetre.getHeight());
+		fenetre.setContentPane(motus);
 		fenetre.revalidate();
 	}
 	
