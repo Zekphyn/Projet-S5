@@ -9,11 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Logger;
 
-import static java.nio.file.StandardOpenOption.APPEND;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.CsvToBean;
@@ -87,8 +85,9 @@ public class Classement {
 	}
 	
 	// Va remplacer le plus petit score si le score de joueur est plus élévé dans son jeu
-	public void setScore(Joueur joueur) {
+	public void setScoreCSV(Joueur joueur) {
 		int index = -1;
+		joueur.setScore(new Date());
 		for( int i = 0 ; i < listeScore.size() ; i++) {
 			if(listeScore.get(i).getJeu().equalsIgnoreCase(joueur.getJeu()) && joueur.getScore() >= listeScore.get(i).getScore()){
 				index = i;
@@ -115,11 +114,13 @@ public class Classement {
 		}
 	}
 	
-	/*public static void main(String[] args) throws IOException{
+	/*public static void main(String[] args) throws IOException, InterruptedException{
 		new Classement();
 		System.out.println(listeScore);
-		Joueur joueur = new Joueur("Mots meles","Julien",8000);
-		setScore(joueur);
+		Joueur joueur = new Joueur("Mots meles","Julien",0);
+		TimeUnit.SECONDS.sleep(5);
+		joueur.setScore(new Date());
+		setScoreCSV(joueur);
 		System.out.println(listeScore);
 		getHighScore("Mots meles");
 	}*/

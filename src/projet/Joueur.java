@@ -1,4 +1,6 @@
 package projet;
+import java.util.Date;
+
 import com.opencsv.bean.CsvBindByName;
 
 public class Joueur {
@@ -9,6 +11,7 @@ public class Joueur {
 	private int score;
 	@CsvBindByName
 	private String jeu;
+	private Date creation;
 	
 	public Joueur() {
 		
@@ -18,6 +21,7 @@ public class Joueur {
 		this.nom=nom;
 		this.score=score;
 		this.jeu = jeu;
+		this.creation = new Date();
 	}
 
 	public String getNom() {
@@ -32,8 +36,13 @@ public class Joueur {
 		return score;
 	}
 
-	public void setScore(int score) {
-		this.score = score;
+	public void setScore(Date timeScore) {
+		int s = (int) (timeScore.getTime()/1000) - (int) (creation.getTime()/1000);
+		if(s > 5000) {
+			this.score = 0;
+		}else {
+			this.score = 5000 - s;
+		}
 	}
 
 	public String getJeu() {

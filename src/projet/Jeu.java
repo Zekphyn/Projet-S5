@@ -1,11 +1,13 @@
 package projet;
 
 
-import penduConsole.PenduPanel;
+import pendu.PenduPanel;
+import sudoku.GrilleLettres;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.*;
 
@@ -16,7 +18,7 @@ public class Jeu extends Menu implements ActionListener {
 	public static void main(String[] args){
 		new Jeu("Jeu");
 	}
-	JFrame fenetre;
+	public static JFrame fenetre;
 	
 	public Jeu() {
 		
@@ -33,15 +35,17 @@ public class Jeu extends Menu implements ActionListener {
 		fenetre.setVisible(true);
 	}
 	
-	public void lancerPendu() {
+	public void lancerPendu() throws IOException {
 		System.out.println("doit lancer le pendu ");
-		fenetre.setContentPane(new PenduPanel());
+		PenduPanel pendu = new PenduPanel(fenetre.getWidth(),fenetre.getHeight());
+		fenetre.setContentPane(pendu);
 		fenetre.revalidate();
 	}
 	
 	public void lancerMotus() {
 		System.out.println("doit lancer le motus");
-		fenetre.setContentPane(new JPanelMotus());
+		JPanelMotus motus = new JPanelMotus(fenetre.getWidth(),fenetre.getHeight());
+		fenetre.setContentPane(motus);
 		fenetre.revalidate();
 	}
 	
@@ -51,6 +55,10 @@ public class Jeu extends Menu implements ActionListener {
 	
 	public void lancerSudoku() {
 		System.out.println("doit lancer sudoku");
+		GrilleLettres sudoku = new GrilleLettres();
+		fenetre.setContentPane(sudoku.getPanel());
+		fenetre.setJMenuBar(sudoku.getMenuSudoku());
+		fenetre.revalidate();
 	}
 	
 	public void lancerClassement() {
@@ -65,7 +73,12 @@ public class Jeu extends Menu implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Pendu")) {
-			lancerPendu();
+			try {
+				lancerPendu();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		} else if (e.getActionCommand().equals("Motus")) {
 			lancerMotus();
 		} else if (e.getActionCommand().equals("Mots Meles")) {

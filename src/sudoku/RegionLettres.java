@@ -1,44 +1,51 @@
 package sudoku;
 
-public class Region {
+import java.util.ArrayList;
+import java.util.List;
+
+public class RegionLettres {
 	// Tableau de 3x3 Cases
-	public Case[][] region;
+	public CaseLettres[][] region;
+	
+	// Tableau des caracteres autorisés
+	List<Character> caracteresAutorises = new ArrayList<Character>();
+	
 	
 	// Constructeur par defaut avec des cases vides :
-	public Region()
+	public RegionLettres()
 	{
-		region=new Case[3][3];
+		region=new CaseLettres[3][3];
 		for(int i=0;i<3;i++)
 		{
 			for(int j=0;j<3;j++)
 			{
-				region[i][j]= new Case();
+				region[i][j]= new CaseLettres();
 			}
 		}
 	}
 	
 	// Accesseur de region qui retourne la case de coordonnees i,j dans la region
-	public Case getCase(int i , int j)
+	public CaseLettres getCase(int i , int j)
 	{
 		return region[i][j];
 	}
 	
 	// Modifier region
-	public void setCase(int i, int j, Case c)
+	public void setCase(int i, int j, CaseLettres c)
 	{
-		(region[i][j]).setNum(c.getNum());
+		(region[i][j]).setChar(c.getChar());
 	}
 	
 	// Accesseur de region qui retourne la case de coordonnees i,j dans la region
-	public int getCaseNum(int i,int j)
+	public char getCaseChar(int i,int j)
 	{
-		return (region[i][j]).getNum();
+		return (region[i][j]).getChar();
 	}
 	
 	// Modifier region
-	public void setCaseNum(int i ,int j,int c)
+	public void setCaseChar(int i ,int j,char c)
 	{
-		(region[i][j]).setNum(c);
+		(region[i][j]).setChar(c);
 	}
 	
 	// Accesseur de fixe qui retourne l'etat de la case de coordonnees i,j dans la region
@@ -69,20 +76,27 @@ public class Region {
 		for(int l=0;l<3;l++)
 			for(int c=0;c<3;c++)
 			{
-				switch ((region[l][c].getNum()))
-				{
-					case 1: un=true;break;
-					case 2: deux=true;break;
-					case 3: trois=true;break;
-					case 4: quatre=true;break;
-					case 5: cinq=true;break;
-					case 6: six=true;break;
-					case 7: sept=true;break;
-					case 8: huit=true;break;
-					case 9: neuf=true;break;
-					
 				
-				}
+				if((region[l][c].getChar())==caracteresAutorises.get(0))
+					un=true;
+				else if ((region[l][c].getChar())==caracteresAutorises.get(1))
+					deux=true;
+				else if ((region[l][c].getChar())==caracteresAutorises.get(2))
+					trois=true;
+				else if ((region[l][c].getChar())==caracteresAutorises.get(3))
+					quatre=true;
+				else if ((region[l][c].getChar())==caracteresAutorises.get(4))
+					cinq=true;
+				else if ((region[l][c].getChar())==caracteresAutorises.get(5))
+					six=true;
+				else if ((region[l][c].getChar())==caracteresAutorises.get(6))
+					sept=true;
+				else if ((region[l][c].getChar())==caracteresAutorises.get(7))
+					huit=true;
+				else if ((region[l][c].getChar())==caracteresAutorises.get(8))
+					neuf=true;
+				
+				
 			}
 		
 		if(un && deux && trois && quatre && cinq && six && sept && huit && neuf )
@@ -94,20 +108,20 @@ public class Region {
 	// Verifie si la region est valide 
 	public boolean regionValide(int l,int c)
 	{
-		if(this.getCaseNum(l, c)==0)
+		if(this.getCaseChar(l, c)==0)
 			return false;
 		int k=0;
 		int p=0;
 		int temp;
 		while(k<3 && p<3)
 		{
-			temp=(region[k][p]).getNum();
+			temp=(region[k][p]).getChar();
 			if(temp != 0)
 			{
 				for(int i=0;i<3;i++)
 					for(int j=0;j<3;j++)
 					{
-						if((region[i][j]).getNum() == temp)
+						if((region[i][j]).getChar() == temp)
 							return false;
 					}
 			}
@@ -118,14 +132,14 @@ public class Region {
 	}
 	
 	// Verifie si la valeur ajoutee a la region ne la rend pas invalide
-	public boolean regionValide(int i,int j,int val)
+	public boolean regionValide(int i,int j,char val)
 	{
-		if(val==0)
+		if(val=='0')
 			return false;
 		for(int l=0;l<3;l++)
 			for(int c=0;c<3;c++)
 			{
-				if(this.getCaseNum(l, c)==val)
+				if(this.getCaseChar(l, c)==val)
 					return false;
 			}
 		return true;

@@ -1,36 +1,43 @@
 package sudoku;
 
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Jeu {
+public class JeuLettres {
 	// Tableau de 3x3 Regions
-	public Region[][] jeu;
+	public RegionLettres[][] jeu;
+	
+	// Tableau des caracteres autorisés
+	//public char[] caracteresAutorises  ;
+	List<Character> caracteresAutorises = new ArrayList<Character>();
+
 	
 	// Constructeur par défaut , construit une grille vide
 	
-	public Jeu()
+	public JeuLettres()
 	{
-		jeu=new Region[3][3];
+		jeu=new RegionLettres[3][3];
 		for(int i=0;i<3;i++)
 			for(int j=0;j<3;j++)
-				jeu[i][j]=new Region();
+				jeu[i][j]=new RegionLettres();
 	}
 	
-	public Jeu(File fichier)
+	public JeuLettres(File fichier)
 	{
-		jeu=new Region[3][3];
+		jeu=new RegionLettres[3][3];
 		boolean b=false;
 		//int fixe ;
 		for(int i=0;i<3;i++)
 			for(int j=0;j<3;j++)
-				jeu[i][j]=new Region();
+				jeu[i][j]=new RegionLettres();
 		BufferedReader reader ;
 		try {
-			reader = new BufferedReader(new FileReader("src/sudoku/g.txt"));
+			reader = new BufferedReader(new FileReader(fichier));
 			
 			String line = reader.readLine();
 			int i=-1;
@@ -40,26 +47,31 @@ public class Jeu {
 				
 					for(int j=0;j<18;j=j+2)
 					{	
-						Integer courant = Integer.parseInt(Character.toString(line.charAt(j)));
-						System.out.println(courant);
-						Integer fixe = Integer.parseInt(Character.toString(line.charAt(j+1)));
-						this.setCaseNum(i, j/2, courant);
+						char c = line.charAt(j);
+						int fixe = Integer.parseInt(Character.toString(line.charAt(j+1)));
+						this.setCaseChar(i, j/2, c);
 						if (fixe==0)
 							b=false;
 						else b = true;
 						this.setCaseFixe(i, j/2, b);
+						if(! existe(c) && c!='0')
+							this.caracteresAutorises.add(c);
 					}
 					// Lire la ligne suivante
 					line = reader.readLine();
 					
 						
 			}
-			
+			reader.close();
+			//Passage de la liste des possibilité de jeux
+			for (int l=0;l<3;l++)
+				for(int c=0;c<3;c++)
+					this.jeu[l][c].caracteresAutorises=this.caracteresAutorises;			
 						
 		}
 		
 		catch(Exception exc) {
-            System.err.println("Ouverture impossible : fichier inexistant ou mal complété.");
+            System.err.println("Oups.. fichier incompatible !");
         }	
 	                
 			
@@ -70,35 +82,59 @@ public class Jeu {
 		
 	}
 	
+	// Verifie si le caractere existe deja dans le tableau de possibilites de jeu
+	public boolean existe(char c)
+	{
+		for (int i=0;i<this.caracteresAutorises.size();i++)
+		{
+			if (caracteresAutorises.get(i)==c)
+				return true;
+			
+		}
+		return false;
+	}
+	
+	// Retourne la position du caractere passé en parametre , dans le tableau de possibilites de jeu
+	public int position (char c)
+	{
+		for(int i=0;i<9;i++)
+		{
+			if (caracteresAutorises.get(i)==c)
+				return i;
+		}
+		return -1;
+	}
+	
+	
 	// Retourne la region de coordonnee i , j 
-	public Region getRegion(int i,int j)
+	public RegionLettres getRegion(int i,int j)
 	{
 		return jeu[i][j];
 	}
 	
 	// Retourne la region dans laquelle se trouve la case i,j dans la grille
-	public Region getRegionDeCase(int i, int j)
+	public RegionLettres getRegionDeCase(int i, int j)
 	{
 		return (jeu[(int)(i/3)][(int)(j/3)]);
 	}
 	
 	// Modifier region
-	public void setRegion(Region[][] r)
+	public void setRegion(RegionLettres[][] r)
 	{
 		jeu=r;
 	}
 	
 	// Retourne la valeur de la case de coordonnees i,j dans la grille
-	public int getCaseNum(int i,int j)
+	public char getCaseChar(int i,int j)
 	{
-		return (jeu[(int)(i/3)][(int)(j/3)]).getCaseNum(i%3, j%3);
+		return (jeu[(int)(i/3)][(int)(j/3)]).getCaseChar(i%3, j%3);
 	}
 	
 	
 	// Modifier le num de la case de coordonnees i,j dans la grille
-	public void setCaseNum(int i,int j,int c)
+	public void setCaseChar(int i,int j,char c)
 	{
-		(jeu[(int)(i/3)][(int)(j/3)]).setCaseNum(i%3,j%3,c);
+		(jeu[(int)(i/3)][(int)(j/3)]).setCaseChar(i%3,j%3,c);
 	}
 	
 	// Retourne l'etat de la case de coordonnees i,j dans la grille
@@ -137,21 +173,27 @@ public class Jeu {
 			boolean neuf=false ;
 			
 			for(int c=0;c<9;c++)
-				{   System.out.println(this.getCaseNum(l, c));
-					switch (this.getCaseNum(l, c))
-					{
-						case 1: un=true;break;
-						case 2: deux=true;break;
-						case 3: trois=true;break;
-						case 4: quatre=true;break;
-						case 5: cinq=true;break;
-						case 6: six=true;break;
-						case 7: sept=true;break;
-						case 8: huit=true;break;
-						case 9: neuf=true;break;
-						
+				{   
 					
-					}
+					
+					if( (this.getCaseChar(l, c)) ==caracteresAutorises.get(0))
+						un=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(1))
+						deux=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(2))
+						trois=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(3))
+						quatre=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(4))
+						cinq=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(5))
+						six=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(6))
+						sept=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(7))
+						huit=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(8))
+						neuf=true;
 				}
 			
 			if(un && deux && trois && quatre && cinq && six && sept && huit && neuf )
@@ -164,20 +206,20 @@ public class Jeu {
 		
 		public boolean ligneValide(int l,int c)
 		{
-			if(this.getCaseNum(l, c)==0)
+			if(this.getCaseChar(l, c)=='0')
 				return false;
 			
 			int j=0;
 			int temp;
 			while(j<3)
 			{
-				temp=this.getCaseNum(l,j);
+				temp=this.getCaseChar(l,j);
 				if(temp != 0)
 				{
 					for(int k=0;k<3;k++)
 						{
 							if(k!=j)
-								if(temp == this.getCaseNum(l, k))
+								if(temp == this.getCaseChar(l, k))
 									return false;
 						}
 				}
@@ -188,14 +230,14 @@ public class Jeu {
 		
 		// Verifie si la ligne est valide avec la nouvelle valeur à inserer
 		
-		public boolean ligneValide(int l ,int c, int val)
+		public boolean ligneValide(int l ,int c, char val)
 		{
-			if(val==0)
+			if(val=='0')
 				return false;
 			
 			for(int i=0;i<9;i++)
 			{
-				if(val == this.getCaseNum(l, i))
+				if(val == this.getCaseChar(l, i))
 					return false;
 			}
 			return true;
@@ -217,20 +259,25 @@ public class Jeu {
 			
 			for(int l=0;l<9;l++)
 				{
-					switch (this.getCaseNum(l, c))
-					{
-						case 1: un=true;break;
-						case 2: deux=true;break;
-						case 3: trois=true;break;
-						case 4: quatre=true;break;
-						case 5: cinq=true;break;
-						case 6: six=true;break;
-						case 7: sept=true;break;
-						case 8: huit=true;break;
-						case 9: neuf=true;break;
-						
 					
-					}
+					if( (this.getCaseChar(l, c)) == caracteresAutorises.get(0))
+						un=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(1))
+						deux=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(2))
+						trois=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(3))
+						quatre=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(4))
+						cinq=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(5))
+						six=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(6))
+						sept=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(7))
+						huit=true;
+					else if ((this.getCaseChar(l, c))==caracteresAutorises.get(8))
+						neuf=true;
 				}
 			
 			if(un && deux && trois && quatre && cinq && six && sept && huit && neuf )
@@ -240,14 +287,14 @@ public class Jeu {
 		}
 		
 		// Verifie si la colonne est valide 
-		public boolean colonneValide(int l ,int c, int val)
+		public boolean colonneValide(int l ,int c, char val)
 		{
-			if(val==0)
+			if(val=='0')
 				return false;
 			
 			for(int i=0;i<9;i++)
 			{
-				if(val == this.getCaseNum(i, c))
+				if(val == this.getCaseChar(i, c))
 					return false;
 			}
 			return true;
@@ -257,20 +304,20 @@ public class Jeu {
 		
 		public boolean colonneValide(int l,int c)
 		{
-			if(this.getCaseNum(l, c)==0)
+			if(this.getCaseChar(l, c)=='0')
 				return false;
 			
 			int j=0;
 			int temp;
 			while(j<9)
 			{
-				temp=this.getCaseNum(j,c);
+				temp=this.getCaseChar(j,c);
 				if(temp != 0)
 				{
 					for(int k=0;k<3;k++)
 						{
 							if(k!=j)
-								if(temp == this.getCaseNum(k, c))
+								if(temp == this.getCaseChar(k, c))
 									return false;
 						}
 				}
@@ -310,21 +357,22 @@ public class Jeu {
 				return resoudre(i,j+1);
 			
 			// On regarde si on peut placer une valeur , si oui on passe a la suivante , sinon on recule
-			for (int val=1;val<10;++val)
+			for (int val=0;val<9;++val)
 			{
-				if ( (this.getRegionDeCase(i, j).regionValide(i, j, val)) && (this.ligneValide(i, j, val) && (this.colonneValide(i, j, val))))
+				if ( (this.getRegionDeCase(i, j).regionValide(i, j, this.caracteresAutorises.get(val))) && (this.ligneValide(i, j, caracteresAutorises.get(val)) && (this.colonneValide(i, j, this.caracteresAutorises.get(val)))))
 				{
-					this.setCaseNum(i, j, val);
+					this.setCaseChar(i, j, caracteresAutorises.get(val));
 					if(resoudre(i,j+1))
 						return true;
 				}
 			}
-			this.setCaseNum(i, j, 0);
-			System.out.println(this);
+			this.setCaseChar(i, j, '0');
 			return false;
 		}
 		
-		// Afficher une grille
+		
+		
+		// Afficher une grille en console
 		
 		public String toString()
 		{
@@ -336,7 +384,7 @@ public class Jeu {
 				{
 					if(j==0)
 						sb.append("| ");
-					sb.append(this.getCaseNum(i, j)+" ");
+					sb.append(this.getCaseChar(i, j)+" ");
 					if( (j==2) || (j==5) || (j==8))
 						sb.append("| ");
 				}
