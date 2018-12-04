@@ -2,8 +2,11 @@ package pendu;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -13,17 +16,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import pendu.PenduPanel.BoutonListener;
 import projet.Classement;
 import projet.Jeu;
 import projet.Joueur;
 
-
-
-public class PenduPanel extends JPanel implements ActionListener{
+public class PenduGridBag extends JPanel{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	char[] lettres = {'a','z','e','r','t','y','u','i','o','p','q','s','d','f','g','h','j','k','l','m','w','x','c','v','b','n'};
 	public Joueur joueur;
@@ -32,36 +31,42 @@ public class PenduPanel extends JPanel implements ActionListener{
 	private ImageLabel image;
 	int width ,height;
 	Mot word;
+
 	
-	
-	public PenduPanel(int width, int height) throws IOException {
+	public PenduGridBag(int width, int height) throws IOException {
 		joueur = new Joueur("Pendu","",0);
 		word = new Mot();
 		this.width = width;
 		this.height = height;
-		init(width,height);
+		init();
 	}
 	
-	public PenduPanel(Joueur j,int width,int height) throws IOException {
+	public PenduGridBag(Joueur j,int width,int height) throws IOException {
 		joueur = j;
 		word = new Mot();
-		init(width,height);
+		this.width = width;
+		this.height = height;
+		init();
 	}
 	
-	
-	public void init(int width,int height){
-		if(joueur.getNom() == "") {
+	private void init() {
+		System.out.println(width+"   "+height);
+		this.setPreferredSize(new Dimension(width,height));
+		/*if(joueur.getNom() == "") {
 			String nom = JOptionPane.showInputDialog(null, "Bonjour ! Quelle est votre Pseudo ?");
 			joueur.setNom(nom);
 			if(nom.equals("")) joueur.setNom("joueur");
-		}
+		}*/
 		setSize(width,height);
+		GridBagLayout gb = new GridBagLayout();
+		setLayout(gb);
+		setBackground(Color.BLUE);
 		Dimension dim = new Dimension(width,height/5);
-		//this.setPreferredSize();
 		
 		// HEADER
 		JPanel head = new JPanel(new BorderLayout());
 		head.setBackground(Color.ORANGE);
+		head.setMinimumSize(dim);
 		head.setPreferredSize(dim);
 		JLabel nomJoueur = new JLabel("Joueur : "+joueur.getNom());
 		
@@ -76,9 +81,9 @@ public class PenduPanel extends JPanel implements ActionListener{
 		//LEFTCONTEND
 		JPanel left = new JPanel(new BorderLayout());
 		left.setBackground(Color.YELLOW);
-		dim =new Dimension(width/2,height/2);
+		dim =new Dimension(width/2,2*height/3);
 		left.setPreferredSize(dim);
-		left.setMinimumSize(new Dimension(width/4,height/3));
+		left.setMinimumSize(dim);
 		
 		JPanel motSecret =new JPanel(new BorderLayout());
 		motSecret.setBackground(Color.yellow);
@@ -96,8 +101,8 @@ public class PenduPanel extends JPanel implements ActionListener{
 		Dimension buttonDimension = new Dimension(50,30);
 		this.bouton = new JButton[26];
 		int i = 0;
-		for(char c : lettres){
-			this.bouton[i] = new JButton(String.valueOf(c).toUpperCase());
+		for(char cha : lettres){
+			this.bouton[i] = new JButton(String.valueOf(cha).toUpperCase());
 			bouton[i].addActionListener(bl);
 			bouton[i].setPreferredSize(buttonDimension);
 			clavier.add(bouton[i]);
@@ -115,11 +120,12 @@ public class PenduPanel extends JPanel implements ActionListener{
 		left.add(err,BorderLayout.SOUTH);
 		
 		//RIGHTCONTEND
-		dim =new Dimension(width/2,height/3);
+		dim =new Dimension(width/2,2*height/3);
 		JPanel right = new JPanel(new BorderLayout());
 		this.image = new ImageLabel(); 
 		this.image.setSize(dim);
 		this.image.setVerticalAlignment(JLabel.CENTER);
+		right.setMinimumSize(dim);
 		right.add(image,BorderLayout.CENTER);
 		right.setBackground(Color.WHITE);
 		right.setPreferredSize(dim);
@@ -128,7 +134,7 @@ public class PenduPanel extends JPanel implements ActionListener{
 		
 		//BOTTOM
 		JPanel bottom = new JPanel(new BorderLayout());
-		dim = new Dimension(width,height/10);
+		dim = new Dimension(width,height/4);
 		bottom.setSize(dim);
 		JLabel regles = new JLabel("LES REGLES SONT LES SUIVANTES :");
 		regles.setHorizontalAlignment(JLabel.CENTER);
@@ -137,18 +143,48 @@ public class PenduPanel extends JPanel implements ActionListener{
 				+"\n ATTENTION : si vous faites trop d'erreurs vous êtes pendu !");
 		regles2.setHorizontalAlignment(JLabel.CENTER);
 		bottom.add(regles2, BorderLayout.CENTER);
+			
 		
-		setLayout(new BorderLayout());
-		setBackground(Color.BLUE);
 		
-		add(head, BorderLayout.NORTH);
-		add(left, BorderLayout.WEST);
-		add(right, BorderLayout.EAST);
-		add(bottom, BorderLayout.SOUTH);
-		setVisible(true);
+			
+	    //L'objet servant à positionner les composants
+	    GridBagConstraints gbc = new GridBagConstraints();
+	    gbc.anchor = GridBagConstraints.NORTH;
+	    gbc.gridwidth = GridBagConstraints.REMAINDER;
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    gbc.weightx = 1;
+	    gbc.weighty = 1;
+	    add(head, gbc,0,0,width,height/4);
+	    gbc.anchor = GridBagConstraints.SOUTH;
+	    add(bottom, gbc,0,height/4+height/2,width,height/5);
+	    
+	    //---------------------------------------------
+	    gbc.fill = GridBagConstraints.BOTH;
+	    gbc.weightx = 1;
+	    gbc.weighty = 1;		
+	    gbc.anchor = GridBagConstraints.WEST;
+
+	    add(left, gbc,0,height/4,width/2,height/2);	
+	    
+	    //---------------------------------------------
+		gbc.anchor = GridBagConstraints.EAST;
+	    add(right, gbc,width/2,height/4,width/2,height/2);	
+	    //---------------------------------------------
+	    revalidate();
+		repaint();
+	    this.setVisible(true);		
+	  
 	}
 	
-
+	private void add(Component c, GridBagConstraints gbc, int x, int y, int w,
+			int h) {
+		gbc.gridx = x;
+		gbc.gridy = y;
+		gbc.gridwidth = w;
+		gbc.gridheight = h;
+		add(c, gbc);
+	}
+	
 	class BoutonListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){	
 			((JButton)e.getSource()).setEnabled(false);
@@ -238,15 +274,4 @@ public class PenduPanel extends JPanel implements ActionListener{
 			
 		}		
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
-		
-	}
-
-
-
-
 }

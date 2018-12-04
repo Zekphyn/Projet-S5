@@ -24,13 +24,8 @@ public class Mot {
 	}
 	
 	public void initMot(){
-		int i = (int)(Math.random() * 15);
-
-		while(this.mot == "") {
-			this.mot = d.motAlea(i);
-			i = (int)(Math.random() * 15);
-
-		}
+		
+		this.mot = d.initMot();
 
 		System.out.println(this.mot);
 		for(int j = 0; j < this.mot.length(); j++)

@@ -1,6 +1,7 @@
 package projet;
 
 
+import pendu.PenduGridBag;
 import pendu.PenduPanel;
 import sudoku.GrilleLettres;
 
@@ -37,8 +38,9 @@ public class Jeu extends Menu implements ActionListener {
 	
 	public void lancerPendu() throws IOException {
 		System.out.println("doit lancer le pendu ");
-		PenduPanel pendu = new PenduPanel(fenetre.getWidth(),fenetre.getHeight());
-		fenetre.setContentPane(pendu);
+		//PenduPanel pendu = new PenduPanel(fenetre.getWidth(),fenetre.getHeight());
+		PenduGridBag pendu2 = new PenduGridBag(fenetre.getWidth(),fenetre.getHeight());
+		fenetre.setContentPane(pendu2);
 		fenetre.revalidate();
 	}
 	
