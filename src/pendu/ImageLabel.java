@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 
 public class ImageLabel extends JLabel{
 
-	private String imagePath = "src/images/pendu0.jpg";
+	private String imagePath = "src/images/pendu1.jpg";
 	public ImageLabel(){}
 	public ImageLabel(String path){
 		this.imagePath = path;

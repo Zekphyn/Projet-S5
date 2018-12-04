@@ -1,6 +1,7 @@
 package motus;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -18,7 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import pendu.PenduPanel;
+
 import projet.BackgroundPanel;
 import projet.Classement;
 import projet.Jeu;

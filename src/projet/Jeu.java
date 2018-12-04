@@ -2,16 +2,13 @@ package projet;
 
 
 import pendu.PenduGridBag;
-import pendu.PenduPanel;
 import sudoku.GrilleLettres;
-
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.*;
-
 import motus.JPanelMotus;
 
 public class Jeu extends Menu implements ActionListener {
@@ -38,8 +35,14 @@ public class Jeu extends Menu implements ActionListener {
 	
 	public void lancerPendu() throws IOException {
 		System.out.println("doit lancer le pendu ");
-		//PenduPanel pendu = new PenduPanel(fenetre.getWidth(),fenetre.getHeight());
 		PenduGridBag pendu2 = new PenduGridBag(fenetre.getWidth(),fenetre.getHeight());
+		fenetre.setContentPane(pendu2);
+		fenetre.revalidate();
+	}
+	
+	public void lancerPendu(Joueur joueur) throws IOException {
+		System.out.println("doit lancer le pendu ");
+		PenduGridBag pendu2 = new PenduGridBag(joueur,fenetre.getWidth(),fenetre.getHeight());
 		fenetre.setContentPane(pendu2);
 		fenetre.revalidate();
 	}
