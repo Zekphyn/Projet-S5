@@ -38,9 +38,6 @@ public class JPanelMotsMeles {
 		mainPanel.setLayout(new BorderLayout());
 		panelMotsMeles.setOpaque(false);
 		mainPanel.add(panelMotsMeles,BorderLayout.CENTER);
-	//	Font police = new Font("Arial", Font.BOLD, 14);
-	//    jtf.setFont(police);
-	 //   jtf.setPreferredSize(new Dimension(150, 30));
 	    creerJeu();
 	}
 	
@@ -63,6 +60,5 @@ public class JPanelMotsMeles {
 
 	public static void addMouseListener(MouseListener mouseListener) {
 		// TODO Auto-generated method stub
-		
 	}
 }

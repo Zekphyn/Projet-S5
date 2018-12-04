@@ -26,6 +26,24 @@ public class MotsMeles extends Jeu {
 	private Dictionnaire dico;
 	private ArrayList<ArrayList<Character>> a = new ArrayList<ArrayList<Character>>();
 	private ArrayList<String> listeMots = new ArrayList<String>();
+	private boolean[][] TabMotTrouve;
+	private boolean[] tabListeMot;
+	
+	
+	public void MotTrouve()
+	{
+		for(int i=0;i<a.size();i++)
+		{
+			for(int j=0;j<a.get(0).size();j++)
+			{
+				TabMotTrouve[i][j] = false;
+			}
+		}
+		for(int k = 0; k<getTailleListeMots(); k++)
+		{
+			tabListeMot[k] = false;
+		}
+	}
 	
 	
 	public int getHauteurlisteMots() {
@@ -45,12 +63,9 @@ public class MotsMeles extends Jeu {
 		return listeMots.size();
 	}
 	
-	/*orientation = 0 = horizontale
-	 * orientation = 1 = verticale
-	 * orientation = 2 = diagonale*/
-	
 	public MotsMeles() throws IOException
 	{
+
 	//	int tailleMot;
 	//	this.nbLigne = nbLigne;
 	//	this.nbColonne = nbColonne;
@@ -83,6 +98,9 @@ public class MotsMeles extends Jeu {
 			//this.caseFin[0] = this.caseDebut[0] + random.nextInt((nbColonne-1)-this.caseDebut[0]);
 		//}
 		grilleRandom();
+		this.TabMotTrouve = new boolean[getHauteurGrille()][getLargeurGrille()];
+		this.tabListeMot = new boolean[getTailleListeMots()];
+		MotTrouve();
 	}
 	public int min(int a, int b)
 	{
@@ -224,9 +242,6 @@ public class MotsMeles extends Jeu {
 					}
 					br2.close();
 				}catch(Exception e2){e2.printStackTrace();}
-		  //   System.out.print(this.listeMots);
-				
-				
 }
 	public ArrayList<Character> list(String sh)
 	{
@@ -239,18 +254,6 @@ public class MotsMeles extends Jeu {
 		}
 		return t;
 	}
-	
-
-	public void jouer()
-	{
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Entrez les coordonnées de départ :\n");
-		int x = sc.nextInt();
-		int y = sc.nextInt();
-		System.out.println("Entrez les coordonnées d'arrivée :\n");
-		int xx = sc.nextInt();
-		int yy = sc.nextInt();
-	}
 
 	public ArrayList<ArrayList<Character>> getA() {
 		return a;
@@ -258,5 +261,15 @@ public class MotsMeles extends Jeu {
 
 	public ArrayList<String> getListeMots() {
 		return listeMots;
+	}
+
+
+	public boolean[][] getTabMotTrouve() {
+		return TabMotTrouve;
+	}
+
+
+	public boolean[] getTabListeMot() {
+		return tabListeMot;
 	}
 }

@@ -3,6 +3,7 @@ package MotsMeles;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -27,6 +28,9 @@ public class Grille extends JPanel implements MouseListener {
 	public int orientation;
 	public int inverse;
 	public String mot;
+
+	
+	
 	
 	public Grille(MotsMeles motsmeles) {
 		super();
@@ -36,6 +40,7 @@ public class Grille extends JPanel implements MouseListener {
 		couleurLignes = Color.BLACK;	
 		this.caseDebut[2] = 0;
 		this.caseFin[2] = 0;
+		//addMouseListener(this);
 		majGrille();
 		addMouseListener(this);
 	}
@@ -43,18 +48,6 @@ public class Grille extends JPanel implements MouseListener {
 	public void ajouter(char c) {
 		Border blackline = BorderFactory.createLineBorder(couleurLignes,1); 
 		JLabel text = new JLabel(Character.toString(c) ,JLabel.CENTER);
-		text.setMinimumSize(new Dimension(75,75));
-		text.setPreferredSize(new Dimension(100,100));
-		text.setFont(new Font("Serif", Font.PLAIN, 36));
-		text.setBorder(blackline);
-		add(text);
-		
-	}
-	
-	public void ajouter(String s)
-	{
-		Border blackline = BorderFactory.createLineBorder(couleurLignes,1); 
-		JLabel text = new JLabel(s ,JLabel.RIGHT);
 		text.setMinimumSize(new Dimension(75,75));
 		text.setPreferredSize(new Dimension(100,100));
 		text.setFont(new Font("Serif", Font.PLAIN, 36));
@@ -71,9 +64,25 @@ public class Grille extends JPanel implements MouseListener {
 		{
 			for(j=0;j< largeur;j++)
 			{
-				ajouter(motsmeles.getA().get(i).get(j));
+				ajouter(motsmeles.getA().get(i).get(j), i, j);
 			}
 		}
+	}
+	
+	public void ajouter(char c, int i, int j) {
+		Border blackline = BorderFactory.createLineBorder(couleurLignes,1); 
+		JLabel text = new JLabel(Character.toString(c) ,JLabel.CENTER);
+		text.setMinimumSize(new Dimension(75,75));
+		text.setPreferredSize(new Dimension(100,100));
+		text.setFont(new Font("Serif", Font.PLAIN, 36));
+		text.setBorder(blackline);
+	//	System.out.println(motsmeles.getTabMotTrouve()[i][j]);
+		if(motsmeles.getTabMotTrouve()[i][j] == true) {
+			text.setBackground(Color.RED);
+			text.setOpaque(true);
+		}
+
+		add(text);
 	}
 
 	public boolean verif()
@@ -120,9 +129,88 @@ public class Grille extends JPanel implements MouseListener {
 			}
 			else inverse = 1;
 		}
+		if(verif == false)
+		{
+			caseDebut[2] = 0;
+			caseFin[2] = 0;
+		}
 		 return verif;
 	}
-	
+	public void parcours2()
+	{
+		//VerifLigne
+				if(orientation == 0)
+				{
+					if(inverse == 0)
+					{
+						for(int j = caseDebut[1];j<=caseFin[1];j++)
+						{
+							motsmeles.getTabMotTrouve()[caseFin[0]][j] = true;
+						}
+					}
+					else
+					{
+						for(int j = caseDebut[1];j>=caseFin[1];j--)
+						{
+							motsmeles.getTabMotTrouve()[caseFin[0]][j] = true;
+						}
+					}
+				}
+				//VerifColonne
+				if(orientation == 1)
+				{
+					if(inverse == 0)
+					{
+						for(int i = caseDebut[0];i<=caseFin[0];i++)
+						{
+							motsmeles.getTabMotTrouve()[i][caseDebut[1]] = true;
+						}
+					}
+					else
+					{
+						for(int i = caseDebut[0];i>=caseFin[0];i--)
+						{
+							motsmeles.getTabMotTrouve()[i][caseDebut[1]] = true;
+						}
+					}
+				}
+				//VerifDiag1
+				if(orientation == 2)
+				{
+					if(inverse == 0)
+					{
+						for(int  i = 0;i <= caseFin[0]-caseDebut[0]; i++)
+						{
+							motsmeles.getTabMotTrouve()[caseDebut[0]+i][caseDebut[1]+i] = true;
+						}
+					}
+					else
+					{
+						for(int  i = 0;i <= caseDebut[0]-caseFin[0]; i++)
+						{
+							motsmeles.getTabMotTrouve()[caseDebut[0]-i][caseDebut[1]-i] = true;
+						}
+					}
+				}
+				//verifDiag2
+				if(orientation == 3)
+				{
+					if(inverse == 0)
+					{
+						for(int j = 0;j <= caseDebut[1]-caseFin[1]; j++)
+						{
+							motsmeles.getTabMotTrouve()[caseDebut[0]+j][caseDebut[1]-j] = true;
+						}
+					}
+					else
+					{
+						for(int i = 0;i <= caseFin[1]-caseDebut[1]; i++)
+						{
+							motsmeles.getTabMotTrouve()[caseDebut[0]-i][caseDebut[1]+i] = true;
+						}
+					}
+				}
+	}
 	public void parcours()
 	{
 		mot = "";
@@ -131,11 +219,9 @@ public class Grille extends JPanel implements MouseListener {
 		{
 			if(inverse == 0)
 			{
-				System.out.println("clonne");
 				for(int j = caseDebut[1];j<=caseFin[1];j++)
 				{
-					mot = mot + Character.toString(motsmeles.getA().get(0).get(j));
-					System.out.println(caseDebut[0]);
+					mot = mot + Character.toString(motsmeles.getA().get(caseFin[0]).get(j));
 				}
 			}
 			else
@@ -143,7 +229,6 @@ public class Grille extends JPanel implements MouseListener {
 				for(int j = caseDebut[1];j>=caseFin[1];j--)
 				{
 					mot = mot + Character.toString(motsmeles.getA().get(caseDebut[0]).get(j));
-					System.out.println(j);
 				}
 			}
 		}
@@ -183,29 +268,39 @@ public class Grille extends JPanel implements MouseListener {
 				}
 			}
 		}
-		//verifDiag2 //pb
+		//verifDiag2
 		if(orientation == 3)
 		{
 			if(inverse == 0)
 			{
-				System.out.println("lololol");
-				for(int j = 0;j <= caseFin[1]-caseDebut[1]; j++)
+				for(int j = 0;j <= caseDebut[1]-caseFin[1]; j++)
 				{
-					mot = mot + Character.toString(motsmeles.getA().get(caseDebut[0]-j).get(caseDebut[1]+j));
+					mot = mot + Character.toString(motsmeles.getA().get(caseDebut[0]+j).get(caseDebut[1]-j));
 				}
 			}
 			else
 			{
-				System.out.println("lololol1");
-				for(int i = 0;i <= caseDebut[1]-caseFin[1]; i++)
+				for(int i = 0;i <= caseFin[1]-caseDebut[1]; i++)
 				{
-					mot = mot + Character.toString(motsmeles.getA().get(caseDebut[0]+i).get(caseDebut[1]-i));
+					mot = mot + Character.toString(motsmeles.getA().get(caseDebut[0]-i).get(caseDebut[1]+i));
 				}
 			}
 		}
+		//verifMotDansListeMots
+		for(int i=0; i<motsmeles.getTailleListeMots(); i++)
+		{
+			if(mot.compareTo(motsmeles.getListeMots().get(i)) == 0)
+			{
+			//	motsmeles.getListeMots().remove(mot);
+				parcours2();
+				motsmeles.getTabListeMot()[i] = true;
+			}
+		}
+		
 		System.out.println(orientation);
 		System.out.println(mot);
 	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 			int gridx=0;
@@ -244,11 +339,11 @@ public class Grille extends JPanel implements MouseListener {
 							parcours();
 							caseDebut[2]=0;
 							caseFin[2]=0;
+							this.removeAll();
+							majGrille();
+							this.revalidate();
 						}
 					}
-					
-			
-		
 	}
 
 	@Override
