@@ -53,6 +53,18 @@ public class Dictionnaire {
 		}
 		
 	}
+		//retourne un mot aléatorie entre 3 et 12 lettres
+		
+		public String initMot(){
+			String mot = "";
+			Random rand = new Random();
+			int i = rand.nextInt(10)+3;
+			while(mot == "") {
+				mot = motAlea(i);
+				i = rand.nextInt(10)+3;
+			}
+			return mot;
+		}
 		
 	
 }
