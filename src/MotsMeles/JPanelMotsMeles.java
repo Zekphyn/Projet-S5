@@ -26,6 +26,7 @@ public class JPanelMotsMeles {
 	JButton b = new JButton("Valider");
 	MotsMeles motsmeles;
 	GridBagConstraints gbc = new GridBagConstraints();
+	GrilleMots rep;
 	
 	public JPanelMotsMeles()
 	{
@@ -34,7 +35,8 @@ public class JPanelMotsMeles {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.grille = new Grille(motsmeles);
+		rep = new GrilleMots(motsmeles);
+		this.grille = new Grille(motsmeles,rep);
 		mainPanel.setLayout(new BorderLayout());
 		panelMotsMeles.setOpaque(false);
 		mainPanel.add(panelMotsMeles,BorderLayout.CENTER);
@@ -54,8 +56,8 @@ public class JPanelMotsMeles {
 	public void creerGrille(JPanel grille, int width, int height){
 		grille.setPreferredSize(new Dimension(width, height));
 		mainPanel.remove(grille);
-		panelMotsMeles.add(new Grille(motsmeles));
-		panelMotsMeles.add(new GrilleMots(motsmeles));
+		panelMotsMeles.add(new Grille(motsmeles,rep));
+		panelMotsMeles.add(rep);
 	}
 
 	public static void addMouseListener(MouseListener mouseListener) {

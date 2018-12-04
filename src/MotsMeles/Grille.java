@@ -28,10 +28,12 @@ public class Grille extends JPanel implements MouseListener {
 	public int orientation;
 	public int inverse;
 	public String mot;
+	public GrilleMots grilleMots;
 	
-	public Grille(MotsMeles motsmeles) {
+	public Grille(MotsMeles motsmeles, GrilleMots gm) {
 		super();
 		this.motsmeles=motsmeles;
+		this.grilleMots = gm;
 		this.longueur=motsmeles.getHauteurGrille();
 		this.largeur=motsmeles.getLargeurGrille();
 		couleurLignes = Color.BLACK;	
@@ -339,6 +341,8 @@ public class Grille extends JPanel implements MouseListener {
 							this.removeAll();
 							majGrille();
 							this.revalidate();
+							// va changer la couleur de la grille de mots à droite par rapport au mot trouvé
+							grilleMots.majGrille(motsmeles.getListeMots().indexOf(mot));
 						}
 					}
 	}
