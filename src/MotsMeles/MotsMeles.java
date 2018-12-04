@@ -96,7 +96,7 @@ public class MotsMeles extends Jeu {
 		//{
 			//this.caseFin[1] = this.caseDebut[1];
 			//this.caseFin[0] = this.caseDebut[0] + random.nextInt((nbColonne-1)-this.caseDebut[0]);
-		//}
+		//} 
 		grilleRandom();
 		this.TabMotTrouve = new boolean[getHauteurGrille()][getLargeurGrille()];
 		this.tabListeMot = new boolean[getTailleListeMots()];

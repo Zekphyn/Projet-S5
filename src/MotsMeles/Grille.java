@@ -28,9 +28,6 @@ public class Grille extends JPanel implements MouseListener {
 	public int orientation;
 	public int inverse;
 	public String mot;
-
-	
-	
 	
 	public Grille(MotsMeles motsmeles) {
 		super();

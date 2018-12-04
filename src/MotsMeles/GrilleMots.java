@@ -26,7 +26,7 @@ public class GrilleMots extends JPanel implements MouseListener {
 		majGrille();
 		addMouseListener(this);
 	}
-	
+
 	public void ajouter(String s, int i)
 	{
 		Border blackline = BorderFactory.createLineBorder(couleurLignes,1); 

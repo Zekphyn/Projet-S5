@@ -40,7 +40,7 @@ public class JPanelMotsMeles {
 		mainPanel.add(panelMotsMeles,BorderLayout.CENTER);
 	    creerJeu();
 	}
-	
+
 	public JPanel getJPanelMotsMeles() {
 		return this.mainPanel;
 	}
