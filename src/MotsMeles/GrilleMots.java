@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-public class GrilleMots extends JPanel implements MouseListener {
+public class GrilleMots extends JPanel{
 	private int largeur;
 	MotsMeles motsmeles;
 	private Color couleurLignes ;
@@ -23,11 +23,20 @@ public class GrilleMots extends JPanel implements MouseListener {
 		this.motsmeles = motsmeles;
 		this.largeur = motsmeles.getHauteurlisteMots();
 		couleurLignes = Color.BLACK;
-		majGrille();
-		addMouseListener(this);
+		init();
+	}
+	
+	// initialise la grille de mot et le visuel
+	public void init() {
+		setLayout(new GridLayout(largeur,0));
+		for(int i=0; i<largeur; i++)
+		{
+			initGrilleMot(motsmeles.getListeMots().get(i), i);
+		}
 	}
   
-	public void ajouter(String s, int i)
+	// cr�er le visuel de la grille de mot
+	public void initGrilleMot(String s, int i)
 	{
 		Border blackline = BorderFactory.createLineBorder(couleurLignes,1); 
 		JLabel text = new JLabel(s ,JLabel.CENTER);
@@ -35,50 +44,16 @@ public class GrilleMots extends JPanel implements MouseListener {
 		text.setPreferredSize(new Dimension(200,20));
 		text.setFont(new Font("Serif", Font.PLAIN, 20));
 		text.setBorder(blackline);
-		if(motsmeles.getTabListeMot()[i] == true)
-		{
-			text.setBackground(Color.RED);
-			text.setOpaque(true);
-		}
+		text.setOpaque(true);
 		add(text);
 	}
 	
-	public void majGrille()
+	// change la couleur du mot se trouvant dans le jlabel numero i
+	public void majGrille(int i)
 	{
-		setLayout(new GridLayout(largeur,0));
-		for(int i=0; i<largeur; i++)
+		if(motsmeles.getTabListeMot()[i] == true)
 		{
-			ajouter(motsmeles.getListeMots().get(i), i);
+			this.getComponent(i).setBackground(Color.RED);
 		}
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		System.out.println("lol");
-		this.removeAll();
-		majGrille();
-		this.revalidate();
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 }

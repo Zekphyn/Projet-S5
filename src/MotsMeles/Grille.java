@@ -11,9 +11,13 @@ import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.Border;
+
+import projet.Classement;
+import projet.Jeu;
 
 public class Grille extends JPanel implements MouseListener {
 	public int longueur;
@@ -28,15 +32,19 @@ public class Grille extends JPanel implements MouseListener {
 	public int orientation;
 	public int inverse;
 	public String mot;
+	public GrilleMots grilleMots;
+	public int nbMotTrouve;
 	
-	public Grille(MotsMeles motsmeles) {
+	public Grille(MotsMeles motsmeles, GrilleMots gm) {
 		super();
 		this.motsmeles=motsmeles;
+		this.grilleMots = gm;
 		this.longueur=motsmeles.getHauteurGrille();
 		this.largeur=motsmeles.getLargeurGrille();
 		couleurLignes = Color.BLACK;	
 		this.caseDebut[2] = 0;
 		this.caseFin[2] = 0;
+		this.nbMotTrouve = 0;
 		//addMouseListener(this);
 		majGrille();
 		addMouseListener(this);
@@ -288,7 +296,7 @@ public class Grille extends JPanel implements MouseListener {
 		{
 			if(mot.compareTo(motsmeles.getListeMots().get(i)) == 0)
 			{
-			//	motsmeles.getListeMots().remove(mot);
+				nbMotTrouve++;
 				parcours2();
 				motsmeles.getTabListeMot()[i] = true;
 			}
@@ -298,10 +306,21 @@ public class Grille extends JPanel implements MouseListener {
 		System.out.println(mot);
 	}
 	
+	public boolean gagner()
+	{
+		if(nbMotTrouve == motsmeles.getTailleListeMots())
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 			int gridx=0;
 			int gridy=0;
+			Object[] options = {"Rejouer", "Menu","Quitter"};
+	    	int option=0;
 			for(int i=0; i<longueur; i++)
 			{
 				gridy=0;
@@ -339,9 +358,40 @@ public class Grille extends JPanel implements MouseListener {
 							this.removeAll();
 							majGrille();
 							this.revalidate();
+							// va changer la couleur de la grille de mots � droite par rapport au mot trouv�
+							grilleMots.majGrille(motsmeles.getListeMots().indexOf(mot));
+							if(gagner()) {
+				    			this.revalidate();
+				    			this.removeAll();
+					    		grilleMots.removeAll();
+						    	Classement classement = new Classement();
+						    	classement.setScoreCSV(motsmeles.getJoueur());
+								option = JOptionPane.showOptionDialog(null,"Bravo !! Vous avez terminé la grille", null, JOptionPane.YES_NO_CANCEL_OPTION,
+									    JOptionPane.QUESTION_MESSAGE,
+									    null,
+									    options,
+									    options[2]);
+								if(option == JOptionPane.OK_OPTION) {
+									//Classement.setScore(joueur);
+									removeAll();
+									add(new JPanelMotsMeles(motsmeles.getJoueur(), 500, 500));
+									revalidate();
+									repaint();
+									
+							}else if(option == JOptionPane.NO_OPTION) {
+								revalidate();
+								Jeu.fenetre.dispose();
+								new Jeu("Jeu");
+								repaint();
+								}else if(option == JOptionPane.CANCEL_OPTION){
+									System.exit(0); 
+								}
+					    	}
+							
+				    		}
 						}
 					}
-	}
+	
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
@@ -365,5 +415,9 @@ public class Grille extends JPanel implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public int getNbMotTrouve() {
+		return nbMotTrouve;
 	}
 }

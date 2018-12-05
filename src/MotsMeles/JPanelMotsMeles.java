@@ -13,12 +13,14 @@ import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import projet.BackgroundPanel;
+import projet.Joueur;
 
-public class JPanelMotsMeles {
+public class JPanelMotsMeles extends BackgroundPanel {
 	JPanel mainPanel = new BackgroundPanel("src/images/backgroundMenu.png");
 	JPanel panelMotsMeles = new JPanel();
 	JPanel grille = new JPanel();
@@ -26,15 +28,49 @@ public class JPanelMotsMeles {
 	JButton b = new JButton("Valider");
 	MotsMeles motsmeles;
 	GridBagConstraints gbc = new GridBagConstraints();
+	GrilleMots rep;
+	int width, height;
 	
-	public JPanelMotsMeles()
+	public JPanelMotsMeles(Joueur joueur, int width, int height)
 	{
+		super("src/images/backgroundMenu.png");
 		try {
 			this.motsmeles = new MotsMeles();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		this.grille = new Grille(motsmeles);
+		motsmeles.setJoueur(joueur);
+		this.width = width;
+		this.height = height;
+		setSize(width, height);
+		this.setOpaque(true);
+		rep = new GrilleMots(motsmeles);
+		this.grille = new Grille(motsmeles,rep);
+		mainPanel.setLayout(new BorderLayout());
+		panelMotsMeles.setOpaque(false);
+		mainPanel.add(panelMotsMeles,BorderLayout.CENTER);
+	    creerJeu();
+	}
+	
+	public JPanelMotsMeles(int width, int height)
+	{
+		super("src/images/backgroundMenu.png");
+		try {
+			this.motsmeles = new MotsMeles();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if(motsmeles.getJoueur().getNom() == "") {
+			String nom = JOptionPane.showInputDialog(null, "Bonjour ! Quelle est votre Pseudo ?");
+			motsmeles.getJoueur().setNom(nom);
+			if(nom == null) motsmeles.getJoueur().setNom("joueur");
+		}
+		this.width = width;
+		this.height = height;
+		setSize(width, height);
+		this.setOpaque(true);
+		rep = new GrilleMots(motsmeles);
+		this.grille = new Grille(motsmeles,rep);
 		mainPanel.setLayout(new BorderLayout());
 		panelMotsMeles.setOpaque(false);
 		mainPanel.add(panelMotsMeles,BorderLayout.CENTER);
@@ -54,11 +90,7 @@ public class JPanelMotsMeles {
 	public void creerGrille(JPanel grille, int width, int height){
 		grille.setPreferredSize(new Dimension(width, height));
 		mainPanel.remove(grille);
-		panelMotsMeles.add(new Grille(motsmeles));
-		panelMotsMeles.add(new GrilleMots(motsmeles));
-	}
-
-	public static void addMouseListener(MouseListener mouseListener) {
-		// TODO Auto-generated method stub
+		panelMotsMeles.add(new Grille(motsmeles,rep));
+		panelMotsMeles.add(rep);
 	}
 }

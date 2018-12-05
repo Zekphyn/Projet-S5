@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 import projet.Dictionnaire;
 import projet.Jeu;
+import projet.Joueur;
 
 public class MotsMeles extends Jeu {
 	private int orientation;
@@ -28,7 +29,7 @@ public class MotsMeles extends Jeu {
 	private ArrayList<String> listeMots = new ArrayList<String>();
 	private boolean[][] TabMotTrouve;
 	private boolean[] tabListeMot;
-	
+	Joueur joueur;
 	
 	public void MotTrouve()
 	{
@@ -100,6 +101,7 @@ public class MotsMeles extends Jeu {
 		grilleRandom();
 		this.TabMotTrouve = new boolean[getHauteurGrille()][getLargeurGrille()];
 		this.tabListeMot = new boolean[getTailleListeMots()];
+		this.joueur= new Joueur("motsmeles","",0);
 		MotTrouve();
 	}
 	public int min(int a, int b)
@@ -271,5 +273,15 @@ public class MotsMeles extends Jeu {
 
 	public boolean[] getTabListeMot() {
 		return tabListeMot;
+	}
+
+
+	public Joueur getJoueur() {
+		return joueur;
+	}
+
+
+	public void setJoueur(Joueur joueur) {
+		this.joueur = joueur;
 	}
 }
