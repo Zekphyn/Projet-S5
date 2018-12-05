@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.*;
+
+import MotsMeles.JPanelMotsMeles;
 import motus.JPanelMotus;
 
 public class Jeu extends Menu implements ActionListener {
@@ -56,6 +58,9 @@ public class Jeu extends Menu implements ActionListener {
 	
 	public void lancerMotsMeles() {
 		System.out.println("doit lancer MotsMeles");
+		JPanelMotsMeles motsMeles = new JPanelMotsMeles(fenetre.getWidth(),fenetre.getHeight());
+		fenetre.setContentPane(motsMeles.getJPanelMotsMeles());
+		fenetre.revalidate();
 	}
 	
 	public void lancerSudoku() {
