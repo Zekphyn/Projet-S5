@@ -4,7 +4,7 @@ public class CaseLettres
 
 	{
 		// valeur de la case
-		public char c;
+		public char caractere;
 		
 		// etat de la case
 		public boolean fixe;
@@ -12,40 +12,40 @@ public class CaseLettres
 		//Constructeur par defaut, cree une case vide, et non fixe
 		public CaseLettres()
 		{	
-			c = 0;
+			caractere = 0;
 			fixe = false;
 		}
 		
 		//Constructeur, cree une case dont la valeur est n, et non fixe
 		public CaseLettres(char n)
 		{
-			c = n;
+			caractere = n;
 			fixe = false;
 		}
 		
 		//Constructeur, cree une case dont la valeur est n, dont l'etat est f
 		public CaseLettres(char n, boolean f)
 		{
-			c = n;
+			caractere = n;
 			fixe = f;
 		}
 		
 		//Constructeur, cree une case vide, dont l'etat est f
 		public CaseLettres(boolean f)
 		{
-			c = 0;
+			caractere = 0;
 			fixe = f;
 		}
 		
 		//Accesseur return La valeur de la case
 		public char getChar()
 		{
-			return c;
+			return caractere;
 		}
 		
 		//Modifieur de num
 		public void setChar(char n)
-		{c = n;}
+		{caractere = n;}
 		
 		//Accesseur de fixe return L'etat de la case
 		public boolean getFixe()
@@ -59,4 +59,4 @@ public class CaseLettres
 		public String toString()
 		{
 			StringBuffer sb = new StringBuffer();
-			sb.append(c);return sb.toString();}}
+			sb.append(caractere);return sb.toString();}}

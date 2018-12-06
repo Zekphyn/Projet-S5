@@ -12,8 +12,7 @@ public class JeuLettres {
 	// Tableau de 3x3 Regions
 	public RegionLettres[][] jeu;
 	
-	// Tableau des caracteres autorisés
-	//public char[] caracteresAutorises  ;
+	// Liste des caracteres autorisés
 	List<Character> caracteresAutorises = new ArrayList<Character>();
 
 	
@@ -73,12 +72,7 @@ public class JeuLettres {
 		catch(Exception exc) {
             System.err.println("Oups.. fichier incompatible !");
         }	
-	                
-			
-			
-		
-		
-			
+	         
 		
 	}
 	
@@ -159,7 +153,7 @@ public class JeuLettres {
 			
 	}
 	
-	// Verifie si la ligne contient tous les chiffres de 1 a 9 
+	// Verifie si la ligne contient tous les caracteres autorises
 		public boolean ligneComplete(int l)
 		{
 			boolean un=false ;
@@ -243,7 +237,7 @@ public class JeuLettres {
 			return true;
 		}
 		
-		// Verfie si la colonne contient tous les chiffres de 1 a 9
+		// Verfie si la colonne contient tous les caracteres de la liste caracteresAutorises
 		
 		public boolean colonneComplete(int c)
 		{

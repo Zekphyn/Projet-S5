@@ -60,7 +60,7 @@ public class RegionLettres {
 		(region[i][j]).setFixe(decision);
 	}
 	
-	// Verifie si la region contient tous les chiffres de 1 a 9
+	// Verifie si la region contient tous les caracteres de la liste des caracteres autorisés
 	public boolean regionComplete()
 	{
 		boolean un=false ;

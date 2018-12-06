@@ -85,13 +85,13 @@ public class GrilleLettres extends JFrame implements ActionListener {
 		fermer.addActionListener(this);
 		resoudre.addActionListener(this);
 		setJMenuBar(menu);
-		
+		// Recupere le Pseudo du joueur
 		if(joueur.getNom() == "") {
 			String nom = JOptionPane.showInputDialog(null, "Bonjour ! Quelle est votre Pseudo ?");
 			joueur.setNom(nom);
 			if(nom.equals("")) joueur.setNom("joueur");
 		}
-	
+		// Recupere le choix entre jouer Sudoku Chiffre ou Lettre
 		Object stringArray[] = { "Chiffre", "Lettre" };
 	    int choixSudoku = JOptionPane.showOptionDialog(null, "Quel type de sudoku", "Choisissez",
 	        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray,
@@ -132,8 +132,8 @@ public class GrilleLettres extends JFrame implements ActionListener {
 					cases[i][j]=new JButton(in.toString());
 				
 				if(jeu.getCaseFixe(i, j))
-					(cases[i][j]).setFont(new java.awt.Font("Helvetic",java.awt.Font.BOLD,25));
-				else(cases[i][j]).setFont(new java.awt.Font("Helvetica",java.awt.Font.PLAIN,25));
+					(cases[i][j]).setFont(new java.awt.Font("Arial",java.awt.Font.BOLD,24));
+				else(cases[i][j]).setFont(new java.awt.Font("Arial",java.awt.Font.PLAIN,24));
 				
 				(cases[i][j]).setSize(10,10);
 				
@@ -179,8 +179,106 @@ public class GrilleLettres extends JFrame implements ActionListener {
 	public void boutonFixe(int i , int j)
 	{
 		if(jeu.getCaseFixe(i, j))
-			(cases[i][j]).setFont(new java.awt.Font("Helvetica",java.awt.Font.BOLD,25));
+			(cases[i][j]).setFont(new java.awt.Font("Arial",java.awt.Font.BOLD,24));
 	}
+	
+
+	
+	
+	// Colore la region si elle contient tous les caracteres autorises
+	public void coloreRegion(int i,int j)
+	{
+		// On verifie si la region de la case ,sur laquelle on a cliqué , est valide , si oui on la colorie
+		if (jeu.getRegionDeCase(i, j).regionComplete())
+			(jp[(int)(i/3)][(int)(j/3)]).setBorder(BorderFactory.createLineBorder(Color.RED));
+		else
+			(jp[(int)(i/3)][(int)(j/3)]).setBorder(BorderFactory.createEtchedBorder());
+		
+	}
+	
+		
+	// Colore la ligne si elle contient tous les caracteres autorises
+	public void coloreLigne(int i)
+	{
+		for(int j=0;j<9;j++)
+		{
+			if(cases[i][j].getForeground()==Color.GREEN)
+			{
+				(cases[i][j]).setForeground(Color.RED);
+				this.boutonFixe(i, j);
+			}	
+			
+			else
+			{
+				(cases[i][j]).setForeground(Color.BLUE);
+				(cases[i][j]).setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN ,24));
+				this.boutonFixe(i, j);
+			}
+		}
+	
+				
+	}
+	
+	// Decolore la ligne si elle ne contient plus tous les caracteres autorises
+	public void decoloreLigne(int i)
+	{
+		for(int j=0;j<9;j++)
+		{
+			if( (cases[i][j].getForeground()==Color.RED) || ( cases[i][j].getForeground()== Color.GREEN ))
+			{
+				(cases[i][j]).setForeground(Color.GREEN);
+				this.boutonFixe(i, j);
+			}	
+			
+			else
+			{
+				(cases[i][j]).setForeground(Color.BLACK);
+				(cases[i][j]).setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN ,24));
+				this.boutonFixe(i, j);
+			}
+		}
+	}
+	
+	// Colore la colonne si elle contient tous les caracteres autorises
+	public void coloreColonne(int j)
+	{
+		for(int i=0;i<9;i++)
+		{
+			if(cases[i][j].getForeground()==Color.BLUE)
+			{
+				(cases[i][j]).setForeground(Color.RED);
+				this.boutonFixe(i, j);
+			}	
+			
+			else
+			{
+				(cases[i][j]).setForeground(Color.GREEN);
+				(cases[i][j]).setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN ,24));
+				this.boutonFixe(i, j);
+			}
+		}
+	}
+	
+	// Decolore la colonne si elle ne contient plus tous les caracteres autorises
+	public void decoloreColonne(int j)
+	{
+		for(int i=0;i<9;i++)
+		{
+			if((cases[i][j].getForeground()==Color.RED) || (cases[i][j].getForeground()==Color.BLUE) )
+			{
+				(cases[i][j]).setForeground(Color.BLUE);
+				this.boutonFixe(i, j);
+			}	
+			
+			else
+			{
+				(cases[i][j]).setForeground(Color.BLACK);
+				(cases[i][j]).setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN ,24));
+				this.boutonFixe(i, j);
+			}
+		}
+	}
+
 	
 	// Colore ( ou decolore ) les colonnes , les lignes et les regions apres verification
 	public void verif(int i,int j)
@@ -205,102 +303,7 @@ public class GrilleLettres extends JFrame implements ActionListener {
 		}
 	}
 	
-	
-	// Colore la region si elle contient tous les chiffres de 1 a 9
-	public void coloreRegion(int i,int j)
-	{
-		// On verifie si la region de la case ,sur laquelle on a cliqué , est valide , si oui on la colorie
-		if (jeu.getRegionDeCase(i, j).regionComplete())
-			(jp[(int)(i/3)][(int)(j/3)]).setBorder(BorderFactory.createLineBorder(Color.RED));
-		else
-			(jp[(int)(i/3)][(int)(j/3)]).setBorder(BorderFactory.createEtchedBorder());
-		
-	}
-	
-		
-	// Colore la ligne si elle contient tout les chiffres de 1 a 9
-	public void coloreLigne(int i)
-	{
-		for(int j=0;j<9;j++)
-		{
-			if(cases[i][j].getForeground()==Color.GREEN)
-			{
-				(cases[i][j]).setForeground(Color.RED);
-				this.boutonFixe(i, j);
-			}	
-			
-			else
-			{
-				(cases[i][j]).setForeground(Color.BLUE);
-				(cases[i][j]).setFont(new java.awt.Font("Helvetica", java.awt.Font.PLAIN ,25));
-				this.boutonFixe(i, j);
-			}
-		}
-	
-				
-	}
-	
-	// Decolore la ligne si elle ne contient plus les chiffres de 1 a 9
-	public void decoloreLigne(int i)
-	{
-		for(int j=0;j<9;j++)
-		{
-			if( (cases[i][j].getForeground()==Color.RED) || ( cases[i][j].getForeground()== Color.GREEN ))
-			{
-				(cases[i][j]).setForeground(Color.GREEN);
-				this.boutonFixe(i, j);
-			}	
-			
-			else
-			{
-				(cases[i][j]).setForeground(Color.BLACK);
-				(cases[i][j]).setFont(new java.awt.Font("Helvetica", java.awt.Font.PLAIN ,25));
-				this.boutonFixe(i, j);
-			}
-		}
-	}
-	
-	// Colore la colonne si elle contient tous les chiffres de 1 a 9 
-	public void coloreColonne(int j)
-	{
-		for(int i=0;i<9;i++)
-		{
-			if(cases[i][j].getForeground()==Color.BLUE)
-			{
-				(cases[i][j]).setForeground(Color.RED);
-				this.boutonFixe(i, j);
-			}	
-			
-			else
-			{
-				(cases[i][j]).setForeground(Color.GREEN);
-				(cases[i][j]).setFont(new java.awt.Font("Helvetica", java.awt.Font.PLAIN ,25));
-				this.boutonFixe(i, j);
-			}
-		}
-	}
-	
-	// Decolore la colonne si elle ne contient plus les chiffres de 1 a 9
-	public void decoloreColonne(int j)
-	{
-		for(int i=0;i<9;i++)
-		{
-			if((cases[i][j].getForeground()==Color.RED) || (cases[i][j].getForeground()==Color.BLUE) )
-			{
-				(cases[i][j]).setForeground(Color.BLUE);
-				this.boutonFixe(i, j);
-			}	
-			
-			else
-			{
-				(cases[i][j]).setForeground(Color.BLACK);
-				(cases[i][j]).setFont(new java.awt.Font("Helvetica", java.awt.Font.PLAIN ,25));
-				this.boutonFixe(i, j);
-			}
-		}
-	}
-
-	// Incremente le chiffre du bouton quand on appuie dessus
+	// Change la valeur du bouton (passage au valeur suivante dans caractereAutorises ) quand on appuie dessus
 	public void appuieBouton(int i,int j)
 	{
 		if(!jeu.getCaseFixe(i, j))
@@ -370,7 +373,7 @@ public class GrilleLettres extends JFrame implements ActionListener {
 			
 		}
 		else {
-			JOptionPane.showMessageDialog(this, "Impossible de resoudre cette grille avec ce solveur simple ", "Message d'erreur", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Impossible de resoudre cette grille avec ce solveur ", "Message d'erreur", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	

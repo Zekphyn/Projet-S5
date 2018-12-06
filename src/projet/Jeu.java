@@ -68,6 +68,8 @@ public class Jeu extends Menu implements ActionListener {
 		GrilleLettres sudoku = new GrilleLettres();
 		fenetre.setContentPane(sudoku.getPanel());
 		fenetre.setJMenuBar(sudoku.getMenuSudoku());
+		fenetre.setMinimumSize(new Dimension(600, 600));
+		fenetre.setSize(600, 600);
 		fenetre.revalidate();
 	}
 	
