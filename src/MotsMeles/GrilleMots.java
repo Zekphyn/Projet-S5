@@ -4,15 +4,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 public class GrilleMots extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int largeur;
 	MotsMeles motsmeles;
 	private Color couleurLignes ;
@@ -48,12 +49,16 @@ public class GrilleMots extends JPanel{
 		add(text);
 	}
 	
-	// change la couleur du mot se trouvant dans le jlabel numero i
+	// change la couleur du mot se trouvant dans le jlabel numero i s'il n'est pas déjà de cette couleur et incrémente le
+	// nombre de mot trouvé
 	public void majGrille(int i)
 	{
 		if(motsmeles.getTabListeMot()[i] == true)
 		{
+			if(this.getComponent(i).getBackground() != Color.RED) {
 			this.getComponent(i).setBackground(Color.RED);
+			motsmeles.nbMotTrouve++;
+			}
 		}
 	}
 }
