@@ -4,7 +4,9 @@ import java.util.Date;
 import com.opencsv.bean.CsvBindByName;
 
 public class Joueur {
-
+	
+	// le @CsvBindByName permet de lier la variable a l'entete du fichier csv ayant le meme nom, la transformation en objet se 
+	// fera en fonction de l'entete
 	@CsvBindByName
 	private String nom;
 	@CsvBindByName
@@ -16,7 +18,7 @@ public class Joueur {
 	public Joueur() {
 		
 	}
-	
+	// on recupere ladate de creation, le score etant basé sur le temps
 	public Joueur(String jeu, String nom, int score) {
 		this.nom=nom;
 		this.score=score;
@@ -35,7 +37,8 @@ public class Joueur {
 	public int getScore() {
 		return score;
 	}
-
+	// Le score est calcule en fonction de la date de creation et de l'appel
+	// à la fonction, le score commence à 5000 et diminue chaque secondes
 	public void setScore(Date timeScore) {
 		int s = (int) (timeScore.getTime()/1000) - (int) (creation.getTime()/1000);
 		if(s > 5000) {

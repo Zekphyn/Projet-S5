@@ -25,6 +25,7 @@ import javax.swing.border.EmptyBorder;
 
 public class Menu implements ActionListener {
 	
+	// le menu a un mainpanel qui contient redessine le fond d'écran et qui contient un sous panel composé de boutons
 	JPanel mainPanel = new BackgroundPanel("src/images/backgroundMenu.png");
 	JPanel panelMenu = new JPanel();
 	JButton buttonPendu = new JButton("Pendu");
@@ -42,6 +43,7 @@ public class Menu implements ActionListener {
 		setPanelButton();
 	}
 	
+	// positionne les boutons
 	public void setPanelButton() {
 		panelMenu.setLayout(new GridBagLayout());
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -57,13 +59,13 @@ public class Menu implements ActionListener {
 		setButton(buttonClassement, 120, 40);
 		setButton(buttonQuitter, 120, 40);
 	}
-	
+	// ajoute les boutons au panel du menu et prepare leur listener
 	public void setButton(JButton button, int width, int height) {
 		button.setPreferredSize(new Dimension(width,height));
 		panelMenu.add(button,gbc);
 		button.addActionListener(this);
 	}
-	
+	// recuperer le panel permet de l'insérer dans le panel prncipal de la classe Jeu
 	public JPanel getPanelMenu() {
 		return this.mainPanel;
 	}

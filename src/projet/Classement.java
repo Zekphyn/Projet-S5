@@ -28,7 +28,7 @@ public class Classement {
 	private static Path path = Paths.get("src/file/score.csv");
 	private ArrayList<Joueur> listeScore = new ArrayList<>();
 	
-	 // Va lire le fichier csv et transformer chaque ligne en objet Joueur qu'on stock dans listeScore
+	 // Va lire le fichier csv et transformer chaque ligne du fichier en objet Joueur qu'on stock dans listeScore
 	public Classement() {
 		Reader reader = null;
 		try {
@@ -103,7 +103,7 @@ public class Classement {
 				index++;
 			}
 			listeScore.remove(index);
-			// Si il y a modification du score, on réécrit 
+			// Si il y a modification du score, on réécrit dans le fichier csv
 			try (BufferedWriter writer = Files.newBufferedWriter(path,StandardCharsets.UTF_8)) {
 
 	            StatefulBeanToCsv<Joueur> beanToCsv = new StatefulBeanToCsvBuilder(writer).withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).build();        
@@ -113,15 +113,4 @@ public class Classement {
 	        }
 		}
 	}
-	
-	/*public static void main(String[] args) throws IOException, InterruptedException{
-		new Classement();
-		System.out.println(listeScore);
-		Joueur joueur = new Joueur("Mots meles","Julien",0);
-		TimeUnit.SECONDS.sleep(5);
-		joueur.setScore(new Date());
-		setScoreCSV(joueur);
-		System.out.println(listeScore);
-		getHighScore("Mots meles");
-	}*/
 }
