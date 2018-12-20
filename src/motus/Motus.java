@@ -76,28 +76,31 @@ public class Motus extends Jeu {
 
 	public Motus() throws IOException
 	{
+		
 		this.dico = new Dictionnaire();
-		//this.joueur=joueur;
+		//initialise le nombre de coup joué à 0, le nombre de coups maximum avant de perdre à 6
 		this.nbCoups = 0;
-		//if(nbCoupsMax<0) {
-			//this.nbCoupsMax = 10;
-		//}
-		//else
-			//this.nbCoupsMax=nbCoupsMax;
 		this.nbCoupsMax=6;
+		//tableau en fonction du nombre de coups max
 		this.jeu = new String[nbCoupsMax];
-		Random random = new Random();
+		
 		//Taille du mot aléatoire entre 6 et 9 lettres
+		Random random = new Random();
 		this.tailleMot = random.nextInt(4)+6;
 		motRech = dico.motAlea(tailleMot).toUpperCase();
+		
+		//initialise le tableau trouve qui sert à savoir quelles lettres du mot ont été trouvées durant la partie à False
 		this.trouve = new boolean[tailleMot];
 		this.trouve[0]=true;
 		for(int i=1;i<tailleMot;i++)
 			trouve[i]=false;
+		//initialisation du tableau de vérification, de la variable gagne qui sert à savoir si on a gagné ou pas et le joueur.
 		this.tabVerif = new int[nbCoupsMax][tailleMot];
 		this.gagne = false;
 		this.joueur= new Joueur("motus","",0);
 	}
+	
+	//C'était pour le  jeu en console.
 	
 	/*private void affichage1() {
 		for(int i=0; i<tailleMot; i++) {
@@ -169,6 +172,8 @@ public class Motus extends Jeu {
 		return motf; 
 	}*/
 	
+	//Vérifie si le mot saisi est le bon ou non.
+	//Si oui gagne passe a true sinon a faux.
 	
 	public void partieGagnee(String mot)
 	{
@@ -181,7 +186,11 @@ public class Motus extends Jeu {
 	}
 	
 	//0 pour pas dans le mot, 1 dedans, 2 si mal placé
-	
+	//Verifie quelles lettres du mots saisie se trouvent dans le mot où sont bien placées, et
+	// mets a jour le tableau 2 dimensions tabVerif
+	//si tabVerif[i]=0 : lettre pas trouvée
+	//              =1 : lettre au bon endroit;
+	//              =2 : lettre trouvée mais mal placée*
 	public void verify(String mot) {
 		boolean[] charUtilise = new boolean[tailleMot];
 		for(int i = 0; i<tailleMot; i++)
@@ -204,17 +213,22 @@ public class Motus extends Jeu {
 						charUtilise[k]=true;
 					}
 	}
-	
+	//mets à jour le tableau trouve qui dit garde en mémoire quelles lettres dut mots ont été trouvées.
+	//si trouve[i] == true on a déjà trouvé motRech.charAt(i) dans la partie.
 	public void majTrouve() {
 		for(int i = 0; i<tailleMot; i++)
 			if(tabVerif[nbCoups][i]==1)
 				this.trouve[i]= true;
 	}
 	
+	//retourne vrai si perdu, sinon faux.
 	public boolean perdu() {
 		return (nbCoups >= nbCoupsMax);
 	}
 	
+	//permets de jouer un coup.
+	//Prend le mots saisie en parametre, cherche si il existe puis le compare au mots recherché et mets a jour le tableau correspondant
+	//a la grille de jeu, le tableau trouve, la variable gagne et incrémente le nombre de coups.
 	public void jouerCoup(String motSaisi)
 	{
 		jeu[nbCoups]=motSaisi;

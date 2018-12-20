@@ -18,10 +18,9 @@ public class Grille extends JPanel{
 	public int longueur;
 	public int largeur;
 	private Color couleurLignes ;
-	//public int largeurCaseGraphique;
 	Motus motus;
-	//private Motus motus
 	
+	//crée la grille
 	public Grille(Motus motus) {
 		super();
 		this.motus=motus;
@@ -29,6 +28,8 @@ public class Grille extends JPanel{
 		this.largeur=motus.getTailleMot();
 		couleurLignes = Color.BLACK;
 		majGrille();
+//		this.width = width;
+	//	this.height = height;
 	}
 	
 /*	public void initGrille() {
@@ -50,6 +51,7 @@ public class Grille extends JPanel{
 			}
 	} */
 	
+	//ajoute un caractere dans la grille.
 	public void ajouter(char c) {
 		Border blackline = BorderFactory.createLineBorder(couleurLignes,1); 
 		JLabel text = new JLabel(Character.toString(c) ,JLabel.CENTER);
@@ -60,6 +62,8 @@ public class Grille extends JPanel{
 		add(text);
 	}
 	
+	//ajoute un caractere en position [i][j] dans tabVerif,
+	//si = mettre fond en rouge (bonne place), 2 en jaune) 
 	public void ajouter(char c, int i, int j) {
 		Border blackline = BorderFactory.createLineBorder(couleurLignes,1); 
 		JLabel text = new JLabel(Character.toString(c) ,JLabel.CENTER);
@@ -77,6 +81,7 @@ public class Grille extends JPanel{
 		add(text);
 	}
 	
+	//construit toute la grille avec les cases de bonne couleurs
 	public void majGrille() {
 		int i;
 		int j;
